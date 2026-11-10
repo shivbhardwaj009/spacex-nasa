@@ -85,3 +85,4 @@ def is_prediction_in_field(
     d_dec = pred.dec - dec_center
     sep_deg = math.hypot(d_ra, d_dec)
     return sep_deg <= radius_deg
+

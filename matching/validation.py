@@ -131,3 +131,4 @@ Total **{len(unknown_candidates)}** candidates exhibit coherent linear proper mo
         f.write(md_content.strip() + "\n")
 
     return report_data
+

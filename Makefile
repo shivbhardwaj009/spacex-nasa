@@ -20,6 +20,12 @@ test:
 	$(PYTHON) -m pytest -v tests
 
 pipeline:
+	$(PYTHON) -m detection.processing --config config/settings.yaml
+	$(PYTHON) -m detection.movers.pipeline
+	$(PYTHON) -m matching
+	$(PYTHON) -m spectra
+
+mock:
 	$(PYTHON) data/mock/generate_mock.py
 
 web:

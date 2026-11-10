@@ -140,3 +140,4 @@ def match_candidates(
             )
 
     return candidates_payload, match_records
+

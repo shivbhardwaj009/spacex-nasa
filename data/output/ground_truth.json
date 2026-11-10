@@ -1,11 +1,11 @@
 {
   "is_synthetic": true,
-  "generated_at": "2026-11-10T17:21:59.551009+00:00",
+  "generated_at": "2026-11-10T17:44:49.151723+00:00",
   "region": {
     "name": "SPHEREx Region",
     "ra_center": 269.452,
     "dec_center": 66.561,
-    "radius_deg": 0.5
+    "radius_deg": 0.2
   },
   "fov_deg": 0.2,
   "epochs_ground_truth": {

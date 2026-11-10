@@ -50,3 +50,4 @@ class MatchRecord:
     mean_distance_arcsec: float = 0.0
     velocity_diff_arcsec_day: float = 0.0
     matched_epochs_count: int = 0
+
