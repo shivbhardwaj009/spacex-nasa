@@ -235,3 +235,4 @@ def run_detection_pipeline(
     validate_file(candidates_json)
 
     return payload
+

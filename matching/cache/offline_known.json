@@ -1,0 +1,78 @@
+{
+  "catalog_version": "1.0",
+  "source": "Offline Fallback Ephemeris Database (IMCCE / MPC / SPHEREx Mock)",
+  "objects": [
+    {
+      "designation": "1",
+      "name": "1 Ceres",
+      "body_type": "asteroid",
+      "ra_deg": 269.452,
+      "dec_deg": 66.561,
+      "ra_rate_arcsec_per_day": 32.5,
+      "dec_rate_arcsec_per_day": 14.2,
+      "magnitude_v": 8.7,
+      "epoch_date": "2026-03-01T00:00:00Z",
+      "aliases": ["Ceres", "Synthetic Asteroid Alpha"]
+    },
+    {
+      "designation": "4",
+      "name": "4 Vesta",
+      "body_type": "asteroid",
+      "ra_deg": 269.850,
+      "dec_deg": 66.720,
+      "ra_rate_arcsec_per_day": 28.4,
+      "dec_rate_arcsec_per_day": -11.6,
+      "magnitude_v": 7.4,
+      "epoch_date": "2026-03-01T00:00:00Z",
+      "aliases": ["Vesta"]
+    },
+    {
+      "designation": "2",
+      "name": "2 Pallas",
+      "body_type": "asteroid",
+      "ra_deg": 269.120,
+      "dec_deg": 66.340,
+      "ra_rate_arcsec_per_day": 18.2,
+      "dec_rate_arcsec_per_day": 22.0,
+      "magnitude_v": 9.2,
+      "epoch_date": "2026-03-01T00:00:00Z",
+      "aliases": ["Pallas"]
+    },
+    {
+      "designation": "433",
+      "name": "433 Eros",
+      "body_type": "nea",
+      "ra_deg": 270.150,
+      "dec_deg": 66.850,
+      "ra_rate_arcsec_per_day": 45.1,
+      "dec_rate_arcsec_per_day": -28.3,
+      "magnitude_v": 11.5,
+      "epoch_date": "2026-03-01T00:00:00Z",
+      "aliases": ["Eros"]
+    },
+    {
+      "designation": "101955",
+      "name": "101955 Bennu",
+      "body_type": "nea",
+      "ra_deg": 269.050,
+      "dec_deg": 66.950,
+      "ra_rate_arcsec_per_day": 52.8,
+      "dec_rate_arcsec_per_day": 19.4,
+      "magnitude_v": 19.8,
+      "epoch_date": "2026-03-01T00:00:00Z",
+      "aliases": ["Bennu"]
+    },
+    {
+      "designation": "1P",
+      "name": "1P/Halley",
+      "body_type": "comet",
+      "ra_deg": 180.500,
+      "dec_deg": 45.200,
+      "ra_rate_arcsec_per_day": 12.0,
+      "dec_rate_arcsec_per_day": -8.5,
+      "magnitude_v": 18.2,
+      "epoch_date": "2026-03-01T00:00:00Z",
+      "aliases": ["Halley"]
+    }
+  ]
+}

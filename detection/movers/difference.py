@@ -79,3 +79,4 @@ def difference_all_epochs(
         difference_epoch_against_model(ep, static_model, static_variance, static_mask)
         for ep in epochs
     ]
+

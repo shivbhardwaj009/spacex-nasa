@@ -141,3 +141,4 @@ def extract_difference_sources(
         )
 
     return detections
+

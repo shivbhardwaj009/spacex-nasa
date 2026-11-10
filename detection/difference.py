@@ -85,3 +85,4 @@ def compute_difference_image(
         wcs=epoch_sci.wcs,
         comparable_pixel_fraction=round(comp_fraction, 4),
     )
+

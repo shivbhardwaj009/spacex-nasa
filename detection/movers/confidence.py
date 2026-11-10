@@ -70,3 +70,4 @@ def compute_mover_confidence(
     confidence = max(0.0, min(1.0, raw_score))
 
     return round(float(confidence), 3)
+

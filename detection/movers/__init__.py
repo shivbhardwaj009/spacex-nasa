@@ -36,3 +36,4 @@ __all__ = [
     "detect_movers",
     "load_detection_config",
 ]
+

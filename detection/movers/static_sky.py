@@ -87,3 +87,4 @@ def build_static_sky_model(
                 static_mask[y, x] = False
 
     return static_model, static_variance, static_mask
+

@@ -1,0 +1,18 @@
+{
+  "report_generated_at": "2026-11-10T17:31:22.512468+00:00",
+  "region_name": "SPHEREx Region",
+  "total_known_predicted_in_field": 5,
+  "total_known_recovered_by_detector": 0,
+  "recovery_fraction": 0.0,
+  "recovery_percentage": 0.0,
+  "predicted_known_objects": [
+    "1 Ceres",
+    "4 Vesta",
+    "2 Pallas",
+    "433 Eros",
+    "101955 Bennu"
+  ],
+  "recovered_known_objects": [],
+  "unknown_candidates_detected": 1,
+  "matches": []
+}

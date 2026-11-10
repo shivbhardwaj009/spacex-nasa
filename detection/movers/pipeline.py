@@ -267,3 +267,4 @@ def detect_movers(
     validate_file(candidates_file)
 
     return payload
+
