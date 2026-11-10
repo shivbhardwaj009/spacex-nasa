@@ -129,3 +129,4 @@ def measure_local_photometry(
         snr=round(snr, 2),
         is_valid=bool(local_wavelength > 0 and flux_net > -3.0 * flux_err),
     )
+

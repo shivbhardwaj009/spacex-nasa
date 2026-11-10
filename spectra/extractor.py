@@ -240,3 +240,4 @@ def get_spectrum(
         "flux": fluxes,
         "flux_err": errors,
     }
+

@@ -51,3 +51,4 @@ class ExtractedSpectrum:
             "flux": self.flux,
             "flux_err": self.flux_err,
         }
+
