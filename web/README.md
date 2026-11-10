@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SPHEREx Sky Diary — Web Application
 
-## Getting Started
+Interactive multi-epoch sky viewer, asteroid detection explorer, and 102-channel spectrophotometry tool developed for the **NASA Space Apps Challenge 2026** (*Planet X and SPHEREx*).
 
-First, run the development server:
+---
 
+## 1. Getting Started
+
+### Development
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Open [http://localhost:3000](http://localhost:3000) to launch the full SPHEREx Sky Diary app.
+Open [http://localhost:3000/design](http://localhost:3000/design) to inspect the design system tokens, WCAG AA contrast rules, and interactive component catalog.
+
+### Validation & Testing
+```bash
+npm run typecheck   # Typecheck without emit (TypeScript)
+npm run lint        # Next.js ESLint verification
+npm test            # Vitest unit test suite
+npm run build       # Production static build export
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 2. URL State & Deep Linking Parameters
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The Sky Diary view is fully driven by URL state. You can deep-link directly to any celestial coordinate, observation epoch, and candidate mover:
 
-## Learn More
+| Query Parameter | Example | Description |
+|---|---|---|
+| `ra` | `?ra=133.7951` | Right Ascension in degrees J2000 $[0, 360)$. |
+| `dec` | `?dec=-7.2452` | Declination in degrees J2000 $[-90, +90]$. |
+| `fov` | `?fov=0.2` | Field of View diameter in degrees. |
+| `epoch` | `?epoch=2` | Active observation epoch index (0-based). |
+| `object` | `?object=SPX-MOV-0002` | Pre-selected mover candidate ID. |
+| `trails` | `?trails=1` / `?trails=0` | Toggle motion trail vectors on/off. |
+| `mode` | `?mode=viewer` / `?mode=blink` | Switch between Sky Viewer and Blink Comparator. |
+| `demo` | `?demo=1` | Fully offline mode (plain canvas star-field, no network calls). |
+| `embed` | `?embed=1` | Embed mode (hides top bar & sidebar for iframe embeds). |
 
-To learn more about Next.js, take a look at the following resources:
+### Example Deep Links
+- **WISE 0855 Target:** `http://localhost:3000/?ra=133.7951&dec=-7.2452&fov=0.2&epoch=2`
+- **Barnard's Star Target:** `http://localhost:3000/?ra=269.4521&dec=4.6934&fov=0.2`
+- **Blink Comparator Mode:** `http://localhost:3000/?mode=blink&epoch=1`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 3. Embedding in External Websites / Portals (`embed=1`)
 
-## Deploy on Vercel
+To embed the SPHEREx Sky Diary into another portal, science article, or dashboard, use the `embed=1` parameter. This hides the navigation chrome and sidebar while keeping the interactive time-lapse controls, mover markers, and mandatory `TEST DATA` badges visible:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```html
+<!-- SPHEREx Sky Diary Iframe Embed Snippet -->
+<iframe
+  src="https://your-domain.org/?ra=133.7951&dec=-7.2452&fov=0.2&epoch=0&embed=1"
+  width="100%"
+  height="600"
+  style="border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 16px; overflow: hidden;"
+  title="SPHEREx Sky Diary - Multi-Epoch Celestial Time-Lapse"
+  allow="fullscreen"
+  loading="lazy"
+></iframe>
+```

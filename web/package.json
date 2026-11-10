@@ -6,23 +6,33 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
+    "aladin-lite": "^3.9.2-beta",
     "lucide-react": "^1.71.0",
     "next": "14.2.15",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "axe-core": "^4.14.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
+    "happy-dom": "^21.0.4",
+    "jsdom": "^27.0.1",
     "json-schema-to-typescript": "^16.0.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.12"
   }
 }

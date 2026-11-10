@@ -67,6 +67,7 @@ export function Slider({
           disabled={disabled}
           onChange={(e) => onChange(Number(e.target.value))}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed focus-visible:outline-none"
+          aria-label={label || "Range slider"}
           aria-valuemin={min}
           aria-valuemax={max}
           aria-valuenow={value}
@@ -99,3 +100,4 @@ export function Slider({
     </div>
   );
 }
+

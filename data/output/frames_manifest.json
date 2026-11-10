@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "is_synthetic": true,
+  "region": {
+    "name": "SPHEREx Region",
+    "ra_center": 269.452,
+    "dec_center": 66.561,
+    "radius_deg": 0.5
+  },
+  "bounds": {
+    "ra_min": 269.2006,
+    "ra_max": 269.7034,
+    "dec_min": 66.461,
+    "dec_max": 66.661,
+    "ra_center": 269.452,
+    "dec_center": 66.561,
+    "fov_deg": 0.2
+  },
+  "frames": [
+    {
+      "epoch_id": "epoch_01",
+      "date": "2026-03-01T00:00:00+00:00",
+      "image_path": "data/frames/epoch_01.png",
+      "bounds": {
+        "ra_min": 269.2006,
+        "ra_max": 269.7034,
+        "dec_min": 66.461,
+        "dec_max": 66.661,
+        "ra_center": 269.452,
+        "dec_center": 66.561,
+        "fov_deg": 0.2
+      },
+      "is_synthetic": true,
+      "stretch": {
+        "vmin": -33.80601119995117,
+        "vmax": 50.01438903808594
+      }
+    },
+    {
+      "epoch_id": "epoch_02",
+      "date": "2026-03-02T00:00:00+00:00",
+      "image_path": "data/frames/epoch_02.png",
+      "bounds": {
+        "ra_min": 269.2006,
+        "ra_max": 269.7034,
+        "dec_min": 66.461,
+        "dec_max": 66.661,
+        "ra_center": 269.452,
+        "dec_center": 66.561,
+        "fov_deg": 0.2
+      },
+      "is_synthetic": true,
+      "stretch": {
+        "vmin": -33.80601119995117,
+        "vmax": 50.01438903808594
+      }
+    },
+    {
+      "epoch_id": "epoch_03",
+      "date": "2026-03-03T00:00:00+00:00",
+      "image_path": "data/frames/epoch_03.png",
+      "bounds": {
+        "ra_min": 269.2006,
+        "ra_max": 269.7034,
+        "dec_min": 66.461,
+        "dec_max": 66.661,
+        "ra_center": 269.452,
+        "dec_center": 66.561,
+        "fov_deg": 0.2
+      },
+      "is_synthetic": true,
+      "stretch": {
+        "vmin": -33.80601119995117,
+        "vmax": 50.01438903808594
+      }
+    },
+    {
+      "epoch_id": "epoch_04",
+      "date": "2026-03-05T00:00:00+00:00",
+      "image_path": "data/frames/epoch_04.png",
+      "bounds": {
+        "ra_min": 269.2006,
+        "ra_max": 269.7034,
+        "dec_min": 66.461,
+        "dec_max": 66.661,
+        "ra_center": 269.452,
+        "dec_center": 66.561,
+        "fov_deg": 0.2
+      },
+      "is_synthetic": true,
+      "stretch": {
+        "vmin": -33.80601119995117,
+        "vmax": 50.01438903808594
+      }
+    },
+    {
+      "epoch_id": "epoch_05",
+      "date": "2026-03-07T00:00:00+00:00",
+      "image_path": "data/frames/epoch_05.png",
+      "bounds": {
+        "ra_min": 269.2006,
+        "ra_max": 269.7034,
+        "dec_min": 66.461,
+        "dec_max": 66.661,
+        "ra_center": 269.452,
+        "dec_center": 66.561,
+        "fov_deg": 0.2
+      },
+      "is_synthetic": true,
+      "stretch": {
+        "vmin": -33.80601119995117,
+        "vmax": 50.01438903808594
+      }
+    }
+  ]
+}

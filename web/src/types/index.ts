@@ -14,3 +14,4 @@ export type Detection = MoverCandidate["detections"][number];
 export type Spectrum = NonNullable<MoverCandidate["spectrum"]>;
 export type EpochInfo = SPHERExSkyDiaryContractSchema["epochs"][number];
 export type RegionInfo = SPHERExSkyDiaryContractSchema["region"];
+

@@ -1,37 +1,54 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { AppHeader } from "@/components/layout/AppHeader";
-import { MainViewerArea } from "@/components/viewer/MainViewerArea";
 import { SidePanel } from "@/components/layout/SidePanel";
-import { Button, Card } from "@/components/ui";
+import { SearchBox, FovControl } from "@/components/viewer";
+import { TimeBar, BlinkComparator } from "@/components/time";
+import { Button, Card, TestDataBadge } from "@/components/ui";
 import { useCandidateCatalog } from "@/lib/client";
-import type { MoverCandidate } from "@/types";
+import { useUrlState } from "@/lib/useUrlState";
+
+// Dynamically import SkyViewer with ssr: false (Aladin Lite is browser-only)
+const DynamicSkyViewer = dynamic(
+  () => import("@/components/viewer/SkyViewer").then((mod) => mod.SkyViewer),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full flex items-center justify-center bg-space-950 text-xs font-mono text-cyan-300">
+        Initializing Celestial Viewport...
+      </div>
+    ),
+  }
+);
 
 export default function SkyDiaryApp() {
   const { data: catalog, loading, error, isSynthetic, reload } = useCandidateCatalog(
     "/data/candidates.json"
   );
 
+  const [urlState, setUrlState] = useUrlState();
   const [beginnerMode, setBeginnerMode] = useState<boolean>(true);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedMover, setSelectedMover] = useState<MoverCandidate | null>(null);
-  const [currentEpochIndex, setCurrentEpochIndex] = useState<number>(0);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!catalog || !searchQuery.trim()) return;
+  const epochs = catalog?.epochs || [];
+  const movers = catalog?.movers || [];
 
-    const q = searchQuery.toLowerCase().trim();
-    const matched = catalog.movers.find(
-      (m) =>
-        m.object_id.toLowerCase().includes(q) ||
-        (m.match_name && m.match_name.toLowerCase().includes(q))
-    );
+  // Find selected mover from URL state or null
+  const selectedMover = urlState.object
+    ? movers.find((m) => m.object_id === urlState.object) || null
+    : null;
 
-    if (matched) {
-      setSelectedMover(matched);
-    }
+  const handleSelectObjectId = (objectId: string) => {
+    setUrlState({ object: objectId === urlState.object ? null : objectId });
+  };
+
+  const handleSearchCoordinate = (coords: { ra: number; dec: number; fov?: number }) => {
+    setUrlState({
+      ra: coords.ra,
+      dec: coords.dec,
+      ...(coords.fov ? { fov: coords.fov } : {}),
+    });
   };
 
   /* =========================================================
@@ -94,7 +111,46 @@ export default function SkyDiaryApp() {
   }
 
   /* =========================================================
-     APP SHELL (TOP BAR + VIEWER + SIDE PANEL / BOTTOM SHEET)
+     EMBED MODE (embed=1: Minimal chrome for iframes)
+     ========================================================= */
+  if (urlState.embed) {
+    return (
+      <div className="h-screen w-screen relative overflow-hidden bg-space-950">
+        {/* Global TEST DATA Badge in embed view */}
+        {isSynthetic && (
+          <div className="absolute top-3 left-3 z-30">
+            <TestDataBadge />
+          </div>
+        )}
+
+        <DynamicSkyViewer
+          ra={urlState.ra}
+          dec={urlState.dec}
+          fov={urlState.fov}
+          onMove={(ra, dec, fov) => setUrlState({ ra, dec, fov })}
+          movers={movers}
+          selectedObjectId={urlState.object}
+          epochIndex={urlState.epoch}
+          epochs={epochs}
+          onSelect={handleSelectObjectId}
+          showTrails={urlState.trails}
+          isDemo={urlState.demo}
+        />
+
+        {/* Embedded Time-lapse footer */}
+        <div className="absolute bottom-3 inset-x-3 z-30">
+          <TimeBar
+            epochs={epochs}
+            currentEpochIndex={urlState.epoch}
+            onEpochChange={(epoch) => setUrlState({ epoch })}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  /* =========================================================
+     FULL APPLICATION SHELL
      ========================================================= */
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden bg-space-950">
@@ -103,31 +159,139 @@ export default function SkyDiaryApp() {
         isSynthetic={isSynthetic}
         beginnerMode={beginnerMode}
         onToggleBeginnerMode={() => setBeginnerMode(!beginnerMode)}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onSearchSubmit={handleSearchSubmit}
+        searchQuery=""
+        onSearchChange={() => {}}
+        onSearchSubmit={(e) => e.preventDefault()}
         candidateCount={catalog.movers.length}
       />
 
-      {/* 2. Main Workspace: Viewer Area + Right Side Panel */}
-      <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
-        {/* Main Sky & Time-Lapse Viewer Area */}
-        <MainViewerArea
-          catalog={catalog}
-          selectedMover={selectedMover}
-          onSelectMover={setSelectedMover}
-          currentEpochIndex={currentEpochIndex}
-          onEpochChange={setCurrentEpochIndex}
-          beginnerMode={beginnerMode}
-        />
+      {/* Secondary Controls Bar: Coordinate Search, Mode, Demo Switch, Trails */}
+      <div className="px-4 py-2 border-b border-white/10 glass-panel-subtle flex flex-wrap items-center justify-between gap-3 shrink-0 z-20">
+        {/* Coordinate & Target SearchBox */}
+        <div className="flex-1 max-w-xl">
+          <SearchBox
+            onCoordinateSelect={handleSearchCoordinate}
+            isDemo={urlState.demo}
+          />
+        </div>
 
-        {/* Right Side Panel (Desktop) / Bottom Sheet (Mobile) */}
+        {/* Mode Switches: Viewer vs Blink, Trails, Demo Mode */}
+        <div className="flex items-center gap-2">
+          {/* Mode Selector */}
+          <div className="flex items-center rounded-xl bg-space-900 border border-white/10 p-0.5 text-xs font-mono">
+            <button
+              type="button"
+              onClick={() => setUrlState({ mode: "viewer" })}
+              className={`min-h-[32px] px-3 py-1 rounded-lg transition-colors ${
+                urlState.mode === "viewer"
+                  ? "bg-cyan-500 text-space-950 font-bold"
+                  : "text-space-300 hover:text-white"
+              }`}
+            >
+              Sky Viewer
+            </button>
+            <button
+              type="button"
+              onClick={() => setUrlState({ mode: "blink" })}
+              className={`min-h-[32px] px-3 py-1 rounded-lg transition-colors ${
+                urlState.mode === "blink"
+                  ? "bg-cyan-500 text-space-950 font-bold"
+                  : "text-space-300 hover:text-white"
+              }`}
+            >
+              Blink Comparator
+            </button>
+          </div>
+
+          {/* Motion Trails Toggle */}
+          <button
+            type="button"
+            onClick={() => setUrlState({ trails: !urlState.trails })}
+            className={`min-h-[36px] px-3 py-1 rounded-xl text-xs font-mono border transition-colors ${
+              urlState.trails
+                ? "bg-cyan-950/60 border-cyan-500/50 text-cyan-300"
+                : "bg-space-900 border-white/10 text-space-400"
+            }`}
+          >
+            Trails: {urlState.trails ? "ON" : "OFF"}
+          </button>
+
+          {/* Demo Mode Toggle (Forces offline plain canvas & local targets) */}
+          <button
+            type="button"
+            onClick={() => setUrlState({ demo: !urlState.demo })}
+            className={`min-h-[36px] px-3 py-1 rounded-xl text-xs font-mono border transition-colors ${
+              urlState.demo
+                ? "bg-amber-950/70 border-amber-500/50 text-amber-300 font-bold"
+                : "bg-space-900 border-white/10 text-space-400"
+            }`}
+          >
+            Demo: {urlState.demo ? "OFFLINE" : "ONLINE"}
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Main Workspace */}
+      <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+        {/* Left / Center: Sky View & Time Controls Area */}
+        <div className="flex-1 flex flex-col h-full overflow-hidden relative">
+          {/* Fallback Notice Banner if URL params were invalid */}
+          {urlState.fallbackNotice && (
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 z-40 px-3 py-1 rounded-lg bg-amber-950/80 border border-amber-500/50 text-[11px] font-mono text-amber-200 shadow-xl">
+              {urlState.fallbackNotice}
+            </div>
+          )}
+
+          {/* Interactive Sky Viewer or Blink Comparator */}
+          <div className="flex-1 relative w-full h-full overflow-hidden">
+            <DynamicSkyViewer
+              ra={urlState.ra}
+              dec={urlState.dec}
+              fov={urlState.fov}
+              onMove={(ra, dec, fov) => setUrlState({ ra, dec, fov })}
+              movers={movers}
+              selectedObjectId={urlState.object}
+              epochIndex={urlState.epoch}
+              epochs={epochs}
+              onSelect={handleSelectObjectId}
+              showTrails={urlState.trails}
+              isDemo={urlState.demo}
+            />
+
+            {/* Field of View Floating Preset Overlay */}
+            <div className="absolute top-3 left-3 z-30 max-w-xs">
+              <FovControl
+                fov={urlState.fov}
+                onFovChange={(newFov) => setUrlState({ fov: newFov })}
+              />
+            </div>
+          </div>
+
+          {/* Bottom Time Controls Area: TimeBar or BlinkComparator */}
+          <div className="p-3 border-t border-white/10 glass-panel-subtle shrink-0 z-20">
+            {urlState.mode === "viewer" ? (
+              <TimeBar
+                epochs={epochs}
+                currentEpochIndex={urlState.epoch}
+                onEpochChange={(epoch) => setUrlState({ epoch })}
+              />
+            ) : (
+              <BlinkComparator
+                epochs={epochs}
+                currentEpochIndex={urlState.epoch}
+                onEpochChange={(epoch) => setUrlState({ epoch })}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Right Side Panel: Movers List & Inspector */}
         <SidePanel
-          movers={catalog.movers}
+          movers={movers}
           selectedMover={selectedMover}
-          onSelectMover={setSelectedMover}
+          onSelectMover={(mover) => setUrlState({ object: mover ? mover.object_id : null })}
           beginnerMode={beginnerMode}
-          searchFilter={searchQuery}
+          searchFilter=""
         />
       </main>
     </div>
