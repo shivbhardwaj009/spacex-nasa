@@ -79,3 +79,4 @@ def query_irsa_cutouts(
     except Exception as exc:
         logger.warning("IRSA SIA query failed: %s", exc)
         return None
+

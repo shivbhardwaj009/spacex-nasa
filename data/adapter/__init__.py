@@ -28,3 +28,4 @@ __all__ = [
     "read_metadata_catalog",
     "query_catalog_coverage",
 ]
+

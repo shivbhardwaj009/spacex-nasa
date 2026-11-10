@@ -64,3 +64,4 @@ def get_source(config: Optional[Dict[str, Any] | str | Path] = None) -> EpochSou
         raise ValueError(
             f"Unsupported data_source: '{data_source}'. Must be either 'mock' or 'irsa'."
         )
+

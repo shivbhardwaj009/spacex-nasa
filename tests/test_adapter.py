@@ -178,3 +178,4 @@ def test_epoch_image_validation():
     with pytest.raises(ValueError) as exc2:
         EpochImage(pixels=pix, variance=var, mask=mask, wcs=wcs, wavelength_map=bad_wave)
     assert "Wavelength map shape" in str(exc2.value)
+

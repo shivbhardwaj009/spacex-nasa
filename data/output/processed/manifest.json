@@ -1,0 +1,373 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-11-10T17:08:03.676052+00:00",
+  "region": {
+    "name": "SPHEREx Deep Field North (Mock)",
+    "ra_center": 269.452,
+    "dec_center": 66.561,
+    "radius_deg": 0.5
+  },
+  "fov_deg": 1.0,
+  "grid_shape": [
+    581,
+    581
+  ],
+  "reference_stars_count": 44,
+  "reference_stars": [
+    {
+      "star_id": "REF-STAR-001",
+      "x_px": 119.00038146972656,
+      "y_px": 65.77328491210938,
+      "mean_flux": 1072.73,
+      "flux_scatter_rel": 0.0401
+    },
+    {
+      "star_id": "REF-STAR-002",
+      "x_px": 187.73655700683594,
+      "y_px": 66.5659408569336,
+      "mean_flux": 522.52,
+      "flux_scatter_rel": 0.0948
+    },
+    {
+      "star_id": "REF-STAR-003",
+      "x_px": 537.2792358398438,
+      "y_px": 67.72476196289062,
+      "mean_flux": 504.19,
+      "flux_scatter_rel": 0.1294
+    },
+    {
+      "star_id": "REF-STAR-004",
+      "x_px": 434.3189392089844,
+      "y_px": 73.1384048461914,
+      "mean_flux": 605.57,
+      "flux_scatter_rel": 0.0687
+    },
+    {
+      "star_id": "REF-STAR-005",
+      "x_px": 111.10265350341797,
+      "y_px": 94.71744537353516,
+      "mean_flux": 901.98,
+      "flux_scatter_rel": 0.0132
+    },
+    {
+      "star_id": "REF-STAR-006",
+      "x_px": 248.80418395996094,
+      "y_px": 106.31314086914062,
+      "mean_flux": 425.0,
+      "flux_scatter_rel": 0.125
+    },
+    {
+      "star_id": "REF-STAR-007",
+      "x_px": 30.8596248626709,
+      "y_px": 116.60401153564453,
+      "mean_flux": 1835.62,
+      "flux_scatter_rel": 0.0946
+    },
+    {
+      "star_id": "REF-STAR-008",
+      "x_px": 200.7636260986328,
+      "y_px": 124.7178955078125,
+      "mean_flux": 1061.14,
+      "flux_scatter_rel": 0.0712
+    },
+    {
+      "star_id": "REF-STAR-009",
+      "x_px": 183.67701721191406,
+      "y_px": 134.59474182128906,
+      "mean_flux": 703.69,
+      "flux_scatter_rel": 0.0784
+    },
+    {
+      "star_id": "REF-STAR-010",
+      "x_px": 47.82497024536133,
+      "y_px": 136.28025817871094,
+      "mean_flux": 1299.96,
+      "flux_scatter_rel": 0.0212
+    },
+    {
+      "star_id": "REF-STAR-011",
+      "x_px": 236.53684997558594,
+      "y_px": 149.30076599121094,
+      "mean_flux": 753.56,
+      "flux_scatter_rel": 0.0869
+    },
+    {
+      "star_id": "REF-STAR-012",
+      "x_px": 499.7279052734375,
+      "y_px": 157.9774932861328,
+      "mean_flux": 1087.13,
+      "flux_scatter_rel": 0.0349
+    },
+    {
+      "star_id": "REF-STAR-013",
+      "x_px": 290.6802673339844,
+      "y_px": 160.07371520996094,
+      "mean_flux": 1327.53,
+      "flux_scatter_rel": 0.0324
+    },
+    {
+      "star_id": "REF-STAR-014",
+      "x_px": 257.824462890625,
+      "y_px": 179.60171508789062,
+      "mean_flux": 637.17,
+      "flux_scatter_rel": 0.1115
+    },
+    {
+      "star_id": "REF-STAR-015",
+      "x_px": 87.25625610351562,
+      "y_px": 186.85997009277344,
+      "mean_flux": 1312.19,
+      "flux_scatter_rel": 0.0495
+    },
+    {
+      "star_id": "REF-STAR-016",
+      "x_px": 449.27301025390625,
+      "y_px": 197.1445770263672,
+      "mean_flux": 1066.44,
+      "flux_scatter_rel": 0.0574
+    },
+    {
+      "star_id": "REF-STAR-017",
+      "x_px": 237.41162109375,
+      "y_px": 201.83380126953125,
+      "mean_flux": 499.51,
+      "flux_scatter_rel": 0.1118
+    },
+    {
+      "star_id": "REF-STAR-018",
+      "x_px": 445.3208312988281,
+      "y_px": 227.17752075195312,
+      "mean_flux": 391.39,
+      "flux_scatter_rel": 0.1128
+    },
+    {
+      "star_id": "REF-STAR-019",
+      "x_px": 247.339599609375,
+      "y_px": 231.77598571777344,
+      "mean_flux": 349.33,
+      "flux_scatter_rel": 0.0797
+    },
+    {
+      "star_id": "REF-STAR-020",
+      "x_px": 273.66009521484375,
+      "y_px": 236.889404296875,
+      "mean_flux": 1008.34,
+      "flux_scatter_rel": 0.037
+    },
+    {
+      "star_id": "REF-STAR-021",
+      "x_px": 233.3885955810547,
+      "y_px": 245.15603637695312,
+      "mean_flux": 693.25,
+      "flux_scatter_rel": 0.0639
+    },
+    {
+      "star_id": "REF-STAR-022",
+      "x_px": 263.4612731933594,
+      "y_px": 246.66659545898438,
+      "mean_flux": 1163.41,
+      "flux_scatter_rel": 0.0204
+    },
+    {
+      "star_id": "REF-STAR-023",
+      "x_px": 86.0908432006836,
+      "y_px": 246.7464599609375,
+      "mean_flux": 715.98,
+      "flux_scatter_rel": 0.0835
+    },
+    {
+      "star_id": "REF-STAR-024",
+      "x_px": 485.028564453125,
+      "y_px": 248.86874389648438,
+      "mean_flux": 1381.3,
+      "flux_scatter_rel": 0.0726
+    },
+    {
+      "star_id": "REF-STAR-025",
+      "x_px": 463.55902099609375,
+      "y_px": 249.425048828125,
+      "mean_flux": 439.93,
+      "flux_scatter_rel": 0.109
+    },
+    {
+      "star_id": "REF-STAR-026",
+      "x_px": 326.2964172363281,
+      "y_px": 262.7372131347656,
+      "mean_flux": 1910.56,
+      "flux_scatter_rel": 0.0618
+    },
+    {
+      "star_id": "REF-STAR-027",
+      "x_px": 356.6679382324219,
+      "y_px": 269.9932556152344,
+      "mean_flux": 1579.03,
+      "flux_scatter_rel": 0.0476
+    },
+    {
+      "star_id": "REF-STAR-028",
+      "x_px": 106.47459411621094,
+      "y_px": 272.8660583496094,
+      "mean_flux": 1369.11,
+      "flux_scatter_rel": 0.0613
+    },
+    {
+      "star_id": "REF-STAR-029",
+      "x_px": 369.8119201660156,
+      "y_px": 297.0373840332031,
+      "mean_flux": 837.82,
+      "flux_scatter_rel": 0.1014
+    },
+    {
+      "star_id": "REF-STAR-030",
+      "x_px": 108.44113159179688,
+      "y_px": 329.4455261230469,
+      "mean_flux": 645.73,
+      "flux_scatter_rel": 0.0949
+    },
+    {
+      "star_id": "REF-STAR-031",
+      "x_px": 282.0497741699219,
+      "y_px": 335.6494140625,
+      "mean_flux": 1397.11,
+      "flux_scatter_rel": 0.0513
+    },
+    {
+      "star_id": "REF-STAR-032",
+      "x_px": 58.15839767456055,
+      "y_px": 337.3187255859375,
+      "mean_flux": 1400.94,
+      "flux_scatter_rel": 0.0577
+    },
+    {
+      "star_id": "REF-STAR-033",
+      "x_px": 163.9158172607422,
+      "y_px": 340.6939697265625,
+      "mean_flux": 552.56,
+      "flux_scatter_rel": 0.0714
+    },
+    {
+      "star_id": "REF-STAR-034",
+      "x_px": 228.48704528808594,
+      "y_px": 371.1601867675781,
+      "mean_flux": 499.51,
+      "flux_scatter_rel": 0.1409
+    },
+    {
+      "star_id": "REF-STAR-035",
+      "x_px": 407.52001953125,
+      "y_px": 375.10162353515625,
+      "mean_flux": 614.53,
+      "flux_scatter_rel": 0.0844
+    },
+    {
+      "star_id": "REF-STAR-036",
+      "x_px": 287.390380859375,
+      "y_px": 399.7406005859375,
+      "mean_flux": 558.18,
+      "flux_scatter_rel": 0.0774
+    },
+    {
+      "star_id": "REF-STAR-037",
+      "x_px": 446.2908020019531,
+      "y_px": 407.9286193847656,
+      "mean_flux": 1617.4,
+      "flux_scatter_rel": 0.1042
+    },
+    {
+      "star_id": "REF-STAR-038",
+      "x_px": 270.74114990234375,
+      "y_px": 409.6021423339844,
+      "mean_flux": 519.8,
+      "flux_scatter_rel": 0.0875
+    },
+    {
+      "star_id": "REF-STAR-039",
+      "x_px": 440.8638610839844,
+      "y_px": 431.9153137207031,
+      "mean_flux": 560.38,
+      "flux_scatter_rel": 0.1236
+    },
+    {
+      "star_id": "REF-STAR-040",
+      "x_px": 208.12811279296875,
+      "y_px": 468.6423034667969,
+      "mean_flux": 565.1,
+      "flux_scatter_rel": 0.0762
+    },
+    {
+      "star_id": "REF-STAR-041",
+      "x_px": 105.98859405517578,
+      "y_px": 503.5120544433594,
+      "mean_flux": 1157.12,
+      "flux_scatter_rel": 0.1083
+    },
+    {
+      "star_id": "REF-STAR-042",
+      "x_px": 357.9205017089844,
+      "y_px": 527.6377563476562,
+      "mean_flux": 529.76,
+      "flux_scatter_rel": 0.0547
+    },
+    {
+      "star_id": "REF-STAR-043",
+      "x_px": 280.756591796875,
+      "y_px": 544.3377075195312,
+      "mean_flux": 755.86,
+      "flux_scatter_rel": 0.0792
+    },
+    {
+      "star_id": "REF-STAR-044",
+      "x_px": 290.4241027832031,
+      "y_px": 548.8335571289062,
+      "mean_flux": 1052.18,
+      "flux_scatter_rel": 0.0661
+    }
+  ],
+  "epochs": [
+    {
+      "epoch_id": "epoch_01",
+      "date": "2026-03-01T00:00:00+00:00",
+      "file": "processed_epoch_01.npz",
+      "norm_factor": 1.0,
+      "valid_pixels": 335224,
+      "unmasked_fraction": 0.9931,
+      "mean_background": 0.1958
+    },
+    {
+      "epoch_id": "epoch_02",
+      "date": "2026-03-02T00:00:00+00:00",
+      "file": "processed_epoch_02.npz",
+      "norm_factor": 0.9741,
+      "valid_pixels": 335227,
+      "unmasked_fraction": 0.9931,
+      "mean_background": 0.1426
+    },
+    {
+      "epoch_id": "epoch_03",
+      "date": "2026-03-03T00:00:00+00:00",
+      "file": "processed_epoch_03.npz",
+      "norm_factor": 0.9713,
+      "valid_pixels": 335227,
+      "unmasked_fraction": 0.9931,
+      "mean_background": 0.1733
+    },
+    {
+      "epoch_id": "epoch_04",
+      "date": "2026-03-05T00:00:00+00:00",
+      "file": "processed_epoch_04.npz",
+      "norm_factor": 0.9831,
+      "valid_pixels": 335225,
+      "unmasked_fraction": 0.9931,
+      "mean_background": 0.156
+    },
+    {
+      "epoch_id": "epoch_05",
+      "date": "2026-03-07T00:00:00+00:00",
+      "file": "processed_epoch_05.npz",
+      "norm_factor": 1.0092,
+      "valid_pixels": 335228,
+      "unmasked_fraction": 0.9931,
+      "mean_background": 0.182
+    }
+  ]
+}

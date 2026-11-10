@@ -97,3 +97,4 @@ class EpochSource(ABC):
     ) -> EpochImage:
         """Load 2D image, variance, mask, WCS, and per-pixel wavelength map."""
         pass
+

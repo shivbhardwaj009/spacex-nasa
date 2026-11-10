@@ -58,3 +58,4 @@ export interface CandidatesPayload {
   epochs: Epoch[];
   movers: Mover[];
 }
+

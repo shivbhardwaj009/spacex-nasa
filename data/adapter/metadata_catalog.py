@@ -118,3 +118,4 @@ def query_catalog_coverage(
         if (entry["ra_min"] <= ra <= entry["ra_max"]) and (entry["dec_min"] <= dec <= entry["dec_max"]):
             matching.append(entry)
     return matching
+

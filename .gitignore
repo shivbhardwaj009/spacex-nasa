@@ -49,10 +49,11 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# SPHEREx large raw data (keep mock cutouts/outputs if needed, ignore large FITS)
+# SPHEREx large raw data (keep mock cutouts/outputs if needed, ignore large FITS & binary stacks)
 *.fits
 *.fits.gz
 *.fit
+*.npz
 /data/raw/
 /data/cache/
 
