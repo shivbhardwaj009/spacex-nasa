@@ -1,0 +1,36 @@
+# SPHEREx Sky Diary Configuration
+# NASA Space Apps Challenge 2026: Planet X and SPHEREx
+
+# Data Source Switch: 'mock' (synthetic test data) or 'irsa' (NASA/IPAC IRSA real SPHEREx data)
+data_source: mock
+
+# Pipeline settings
+pipeline:
+  schema_version: "1.0"
+  output_dir: "data/output"
+  cutout_dir: "data/output/cutouts"
+
+# Region of interest default parameters
+region:
+  name: "SPHEREx Deep Field North (Mock)"
+  ra_center: 269.452
+  dec_center: 66.561
+  radius_deg: 0.5
+  fov_deg: 1.0
+
+# Detection thresholds
+detection:
+  snr_threshold: 3.5
+  min_epochs: 3
+  max_velocity_arcsec_day: 120.0
+
+# Mock data generation
+mock:
+  num_movers: 25
+  known_ratio: 0.6
+  random_seed: 42
+  cutout_size_px: 64
+  wavelength_min_um: 0.75
+  wavelength_max_um: 5.00
+  num_spectral_channels: 102
+

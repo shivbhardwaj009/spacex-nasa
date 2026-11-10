@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/spherex-sky-diary/schema/v1.0/schema.json",
+  "title": "SPHEREx Sky Diary Contract Schema",
+  "description": "Unified JSON schema v1.0 connecting offline Python processing pipelines and web frontend for SPHEREx mover detection and spectral characterization.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "region",
+    "epochs",
+    "movers"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "API contract version. Must be '1.0' for this schema."
+    },
+    "data_version": {
+      "type": "string",
+      "description": "Pipeline release or run identifier, e.g. 'v0.1.0-mock'."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of file generation."
+    },
+    "fov_deg": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Field of view diameter/dimension in degrees."
+    },
+    "region": {
+      "type": "object",
+      "description": "Target sky region information.",
+      "required": [
+        "name",
+        "ra_center",
+        "dec_center",
+        "radius_deg"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable name of the sky region (e.g. SPHEREx Deep Field North)."
+        },
+        "ra_center": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 360.0,
+          "description": "Center Right Ascension in degrees (J2000)."
+        },
+        "dec_center": {
+          "type": "number",
+          "minimum": -90.0,
+          "maximum": 90.0,
+          "description": "Center Declination in degrees (J2000)."
+        },
+        "radius_deg": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "description": "Search radius around center in degrees."
+        }
+      },
+      "additionalProperties": false
+    },
+    "epochs": {
+      "type": "array",
+      "description": "Ordered collection of observation epochs available for the region.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "epoch_id",
+          "date",
+          "band_count"
+        ],
+        "properties": {
+          "epoch_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique identifier for the epoch observation."
+          },
+          "date": {
+            "type": "string",
+            "description": "Observation timestamp in ISO 8601 format."
+          },
+          "band_count": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Number of spectral channels/bands acquired in this epoch."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "movers": {
+      "type": "array",
+      "description": "List of detected celestial movers (asteroids, comets, or unknown candidates).",
+      "items": {
+        "type": "object",
+        "required": [
+          "object_id",
+          "ra",
+          "dec",
+          "type",
+          "match_name",
+          "confidence",
+          "is_synthetic",
+          "motion",
+          "detections",
+          "spectrum"
+        ],
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique identifier for the mover candidate."
+          },
+          "ra": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 360.0,
+            "description": "Reference Right Ascension in degrees (J2000)."
+          },
+          "dec": {
+            "type": "number",
+            "minimum": -90.0,
+            "maximum": 90.0,
+            "description": "Reference Declination in degrees (J2000)."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "known",
+              "unknown"
+            ],
+            "description": "Classification: 'known' (matched to catalog) or 'unknown' (new mover / Planet X candidate)."
+          },
+          "match_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Catalog designation if known (e.g. 'Ceres', '2024 BX1'), or null if unknown."
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "description": "Detection/matching confidence score between 0.0 and 1.0."
+          },
+          "is_synthetic": {
+            "type": "boolean",
+            "description": "True if data was artificially synthesized. UI must display TEST DATA badge if true."
+          },
+          "motion": {
+            "type": "object",
+            "description": "Apparent on-sky proper motion rates.",
+            "required": [
+              "ra_rate_arcsec_per_day",
+              "dec_rate_arcsec_per_day"
+            ],
+            "properties": {
+              "ra_rate_arcsec_per_day": {
+                "type": "number",
+                "description": "Apparent motion rate in RA (arcsec/day, cos(dec) projected)."
+              },
+              "dec_rate_arcsec_per_day": {
+                "type": "number",
+                "description": "Apparent motion rate in Dec (arcsec/day)."
+              }
+            },
+            "additionalProperties": false
+          },
+          "detections": {
+            "type": "array",
+            "description": "Individual epoch detections associated with this mover track.",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "epoch_id",
+                "date",
+                "ra",
+                "dec",
+                "flux",
+                "cutout_url"
+              ],
+              "properties": {
+                "epoch_id": {
+                  "type": "string",
+                  "description": "Observation epoch ID."
+                },
+                "date": {
+                  "type": "string",
+                  "description": "Detection timestamp in ISO 8601 format."
+                },
+                "ra": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 360.0,
+                  "description": "Fitted centroid RA in degrees."
+                },
+                "dec": {
+                  "type": "number",
+                  "minimum": -90.0,
+                  "maximum": 90.0,
+                  "description": "Fitted centroid Dec in degrees."
+                },
+                "flux": {
+                  "type": "number",
+                  "description": "Aperture or PSF photometry flux (arbitrary or calibrated units)."
+                },
+                "cutout_url": {
+                  "type": "string",
+                  "description": "Relative URL or path to the 2D image cutout."
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "spectrum": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Extracted spectrophotometric 102-channel SED (0.75 - 5.0 um) or null if unextracted.",
+            "properties": {
+              "wavelength_um": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "description": "Center wavelengths in micrometers (0.75 - 5.0 um)."
+              },
+              "flux": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "description": "Measured flux density per spectral band."
+              },
+              "flux_err": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "description": "Photometric 1-sigma uncertainty per spectral band."
+              }
+            },
+            "required": [
+              "wavelength_um",
+              "flux",
+              "flux_err"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
+

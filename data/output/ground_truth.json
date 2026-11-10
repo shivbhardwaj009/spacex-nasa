@@ -1,0 +1,263 @@
+{
+  "is_synthetic": true,
+  "generated_at": "2026-11-10T16:59:56.717147+00:00",
+  "region": {
+    "name": "SPHEREx Region",
+    "ra_center": 269.452,
+    "dec_center": 66.561,
+    "radius_deg": 0.5
+  },
+  "fov_deg": 0.2,
+  "epochs_ground_truth": {
+    "epoch_01": {
+      "date": "2026-03-01T00:00:00+00:00",
+      "movers": [
+        {
+          "object_id": "MOCK-MOVER-01",
+          "name": "Synthetic Asteroid Alpha",
+          "type": "known",
+          "ra_rate_arcsec_per_day": 32.5,
+          "dec_rate_arcsec_per_day": 14.2,
+          "flux": 850.0,
+          "epoch_id": "epoch_01",
+          "date": "2026-03-01T00:00:00+00:00",
+          "ra": 269.3682000042547,
+          "dec": 66.53877777777778,
+          "pixel_x": 76.87214991392369,
+          "pixel_y": 44.60976909977165,
+          "in_fov": true
+        },
+        {
+          "object_id": "MOCK-MOVER-02",
+          "name": "Synthetic Planet X Candidate",
+          "type": "unknown",
+          "ra_rate_arcsec_per_day": -4.2,
+          "dec_rate_arcsec_per_day": 2.8,
+          "flux": 420.0,
+          "epoch_id": "epoch_01",
+          "date": "2026-03-01T00:00:00+00:00",
+          "ra": 269.4869166648939,
+          "dec": 66.57211111111111,
+          "pixel_x": 49.43909138921462,
+          "pixel_y": 63.953866700099596,
+          "in_fov": true
+        },
+        {
+          "object_id": "MOCK-MOVER-03",
+          "name": "Synthetic Fast NEO",
+          "type": "unknown",
+          "ra_rate_arcsec_per_day": 65.0,
+          "dec_rate_arcsec_per_day": -38.0,
+          "flux": 620.0,
+          "epoch_id": "epoch_01",
+          "date": "2026-03-01T00:00:00+00:00",
+          "ra": 269.41010000212736,
+          "dec": 66.59155555555556,
+          "pixel_x": 67.1655149558714,
+          "pixel_y": 75.24518045243315,
+          "in_fov": true
+        }
+      ]
+    },
+    "epoch_02": {
+      "date": "2026-03-02T00:00:00+00:00",
+      "movers": [
+        {
+          "object_id": "MOCK-MOVER-01",
+          "name": "Synthetic Asteroid Alpha",
+          "type": "known",
+          "ra_rate_arcsec_per_day": 32.5,
+          "dec_rate_arcsec_per_day": 14.2,
+          "flux": 850.0,
+          "epoch_id": "epoch_02",
+          "date": "2026-03-02T00:00:00+00:00",
+          "ra": 269.3908958364357,
+          "dec": 66.54272222222222,
+          "pixel_x": 71.62328620885603,
+          "pixel_y": 46.89400505232966,
+          "in_fov": true
+        },
+        {
+          "object_id": "MOCK-MOVER-02",
+          "name": "Synthetic Planet X Candidate",
+          "type": "unknown",
+          "ra_rate_arcsec_per_day": -4.2,
+          "dec_rate_arcsec_per_day": 2.8,
+          "flux": 420.0,
+          "epoch_id": "epoch_02",
+          "date": "2026-03-02T00:00:00+00:00",
+          "ra": 269.4839836650428,
+          "dec": 66.5728888888889,
+          "pixel_x": 50.11643897112822,
+          "pixel_y": 64.40511685135642,
+          "in_fov": true
+        },
+        {
+          "object_id": "MOCK-MOVER-03",
+          "name": "Synthetic Fast NEO",
+          "type": "unknown",
+          "ra_rate_arcsec_per_day": 65.0,
+          "dec_rate_arcsec_per_day": -38.0,
+          "flux": 620.0,
+          "epoch_id": "epoch_02",
+          "date": "2026-03-02T00:00:00+00:00",
+          "ra": 269.4554916664894,
+          "dec": 66.581,
+          "pixel_x": 56.694197693454775,
+          "pixel_y": 69.11292622807744,
+          "in_fov": true
+        }
+      ]
+    },
+    "epoch_03": {
+      "date": "2026-03-03T00:00:00+00:00",
+      "movers": [
+        {
+          "object_id": "MOCK-MOVER-01",
+          "name": "Synthetic Asteroid Alpha",
+          "type": "known",
+          "ra_rate_arcsec_per_day": 32.5,
+          "dec_rate_arcsec_per_day": 14.2,
+          "flux": 850.0,
+          "epoch_id": "epoch_03",
+          "date": "2026-03-03T00:00:00+00:00",
+          "ra": 269.41359166861673,
+          "dec": 66.54666666666667,
+          "pixel_x": 66.37608608924222,
+          "pixel_y": 49.180148446610616,
+          "in_fov": true
+        },
+        {
+          "object_id": "MOCK-MOVER-02",
+          "name": "Synthetic Planet X Candidate",
+          "type": "unknown",
+          "ra_rate_arcsec_per_day": -4.2,
+          "dec_rate_arcsec_per_day": 2.8,
+          "flux": 420.0,
+          "epoch_id": "epoch_03",
+          "date": "2026-03-03T00:00:00+00:00",
+          "ra": 269.48105066519173,
+          "dec": 66.57366666666667,
+          "pixel_x": 50.79374414186595,
+          "pixel_y": 64.85639882642816,
+          "in_fov": true
+        },
+        {
+          "object_id": "MOCK-MOVER-03",
+          "name": "Synthetic Fast NEO",
+          "type": "unknown",
+          "ra_rate_arcsec_per_day": 65.0,
+          "dec_rate_arcsec_per_day": -38.0,
+          "flux": 620.0,
+          "epoch_id": "epoch_03",
+          "date": "2026-03-03T00:00:00+00:00",
+          "ra": 269.5008833308515,
+          "dec": 66.57044444444445,
+          "pixel_x": 46.21397077354001,
+          "pixel_y": 62.98828854156706,
+          "in_fov": true
+        }
+      ]
+    },
+    "epoch_04": {
+      "date": "2026-03-05T00:00:00+00:00",
+      "movers": [
+        {
+          "object_id": "MOCK-MOVER-01",
+          "name": "Synthetic Asteroid Alpha",
+          "type": "known",
+          "ra_rate_arcsec_per_day": 32.5,
+          "dec_rate_arcsec_per_day": 14.2,
+          "flux": 850.0,
+          "epoch_id": "epoch_04",
+          "date": "2026-03-05T00:00:00+00:00",
+          "ra": 269.4589833329788,
+          "dec": 66.55455555555555,
+          "pixel_x": 55.88667833459153,
+          "pixel_y": 53.75815470074053,
+          "in_fov": true
+        },
+        {
+          "object_id": "MOCK-MOVER-02",
+          "name": "Synthetic Planet X Candidate",
+          "type": "unknown",
+          "ra_rate_arcsec_per_day": -4.2,
+          "dec_rate_arcsec_per_day": 2.8,
+          "flux": 420.0,
+          "epoch_id": "epoch_04",
+          "date": "2026-03-05T00:00:00+00:00",
+          "ra": 269.47518466548956,
+          "dec": 66.57522222222222,
+          "pixel_x": 52.148227246152075,
+          "pixel_y": 65.75905823898579,
+          "in_fov": true
+        },
+        {
+          "object_id": "MOCK-MOVER-03",
+          "name": "Synthetic Fast NEO",
+          "type": "unknown",
+          "ra_rate_arcsec_per_day": 65.0,
+          "dec_rate_arcsec_per_day": -38.0,
+          "flux": 620.0,
+          "epoch_id": "epoch_04",
+          "date": "2026-03-05T00:00:00+00:00",
+          "ra": 269.59166665957554,
+          "dec": 66.54933333333334,
+          "pixel_x": 25.226801791921325,
+          "pixel_y": 50.76189267300973,
+          "in_fov": true
+        }
+      ]
+    },
+    "epoch_05": {
+      "date": "2026-03-07T00:00:00+00:00",
+      "movers": [
+        {
+          "object_id": "MOCK-MOVER-01",
+          "name": "Synthetic Asteroid Alpha",
+          "type": "known",
+          "ra_rate_arcsec_per_day": 32.5,
+          "dec_rate_arcsec_per_day": 14.2,
+          "flux": 850.0,
+          "epoch_id": "epoch_05",
+          "date": "2026-03-07T00:00:00+00:00",
+          "ra": 269.5043749973408,
+          "dec": 66.56244444444445,
+          "pixel_x": 45.40393010639144,
+          "pixel_y": 58.34378214178228,
+          "in_fov": true
+        },
+        {
+          "object_id": "MOCK-MOVER-02",
+          "name": "Synthetic Planet X Candidate",
+          "type": "unknown",
+          "ra_rate_arcsec_per_day": -4.2,
+          "dec_rate_arcsec_per_day": 2.8,
+          "flux": 420.0,
+          "epoch_id": "epoch_05",
+          "date": "2026-03-07T00:00:00+00:00",
+          "ra": 269.4693186657874,
+          "dec": 66.57677777777778,
+          "pixel_x": 53.5025406945896,
+          "pixel_y": 66.66184491970714,
+          "in_fov": true
+        },
+        {
+          "object_id": "MOCK-MOVER-03",
+          "name": "Synthetic Fast NEO",
+          "type": "unknown",
+          "ra_rate_arcsec_per_day": 65.0,
+          "dec_rate_arcsec_per_day": -38.0,
+          "flux": 620.0,
+          "epoch_id": "epoch_05",
+          "date": "2026-03-07T00:00:00+00:00",
+          "ra": 269.68244998829965,
+          "dec": 66.52822222222223,
+          "pixel_x": 4.204035665935862,
+          "pixel_y": 38.566052595228086,
+          "in_fov": true
+        }
+      ]
+    }
+  }
+}
