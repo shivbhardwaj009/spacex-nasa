@@ -1,0 +1,34 @@
+# SPHEREx Mover Detection Configuration
+# NASA Space Apps Challenge 2026: Planet X and SPHEREx
+
+# Static-sky and differencing parameters
+differencing:
+  wavelength_tol_um: 0.05
+  min_epochs_for_median: 2
+
+# Source extraction parameters
+extraction:
+  snr_threshold: 3.0
+  fwhm_px: 2.8
+  aperture_radius_px: 2.5
+
+# Tracklet linkage parameters
+tracklet:
+  min_detections: 3
+  max_rate_arcsec_per_day: 120.0
+  min_rate_arcsec_per_day: 0.5
+  match_radius_arcsec: 3.5
+  max_rms_arcsec: 1.5
+
+# Artifact rejection thresholds
+artifact_filters:
+  min_epochs: 3
+  stationary_max_rate_arcsec_per_day: 0.8
+  filter_response_corr_threshold: 0.70
+
+# Output parameters
+output:
+  cutout_size_px: 64
+  candidates_path: "data/output/candidates.json"
+  cutouts_dir: "data/output/cutouts"
+  eval_path: "data/output/detection_eval.json"
