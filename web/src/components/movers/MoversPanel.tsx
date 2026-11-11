@@ -107,30 +107,27 @@ export const MoversPanel: React.FC<MoversPanelProps> = ({
 
   return (
     <div className={`flex flex-col h-full bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-xl overflow-hidden shadow-xl text-slate-100 ${className}`}>
-      {/* Panel Header */}
-      <div className="p-4 border-b border-slate-800 bg-slate-950/80 flex flex-col gap-3">
+      {/* Minimal Header Controls */}
+      <div className="p-3 border-b border-white/5 bg-transparent flex flex-col gap-2.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-bold tracking-wider uppercase text-white flex items-center gap-1.5">
-              <span>Detected Movers</span>
-              <GlossaryTooltip termKey="motionTrail" beginnerMode={beginnerMode} />
-            </h2>
             <span
               aria-live="polite"
-              className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700/60"
+              className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-white/5 text-white/60 border border-white/10"
             >
               {filteredMovers.length} of {movers.length}
             </span>
+            <GlossaryTooltip termKey="motionTrail" beginnerMode={beginnerMode} />
           </div>
 
           {/* Quick Filter Tabs */}
-          <div className="flex items-center rounded-lg bg-slate-900 border border-slate-800 p-0.5 text-xs">
+          <div className="flex items-center rounded-lg bg-black/40 border border-white/10 p-0.5 text-xs">
             <button
               type="button"
               onClick={() => setFilterType("all")}
               aria-pressed={filterType === "all"}
-              className={`px-2 py-1 rounded transition-colors ${
-                filterType === "all" ? "bg-cyan-900/70 text-cyan-200 font-semibold" : "text-slate-400 hover:text-slate-200"
+              className={`px-2.5 py-0.5 rounded text-xs transition-colors ${
+                filterType === "all" ? "bg-white/15 text-white font-medium" : "text-white/40 hover:text-white"
               }`}
             >
               All
@@ -139,8 +136,8 @@ export const MoversPanel: React.FC<MoversPanelProps> = ({
               type="button"
               onClick={() => setFilterType("known")}
               aria-pressed={filterType === "known"}
-              className={`px-2 py-1 rounded transition-colors ${
-                filterType === "known" ? "bg-cyan-900/70 text-cyan-200 font-semibold" : "text-slate-400 hover:text-slate-200"
+              className={`px-2.5 py-0.5 rounded text-xs transition-colors ${
+                filterType === "known" ? "bg-cyan-500/20 text-cyan-300 font-medium" : "text-white/40 hover:text-white"
               }`}
             >
               Known
@@ -149,8 +146,8 @@ export const MoversPanel: React.FC<MoversPanelProps> = ({
               type="button"
               onClick={() => setFilterType("unknown")}
               aria-pressed={filterType === "unknown"}
-              className={`px-2 py-1 rounded transition-colors ${
-                filterType === "unknown" ? "bg-amber-900/70 text-amber-200 font-semibold" : "text-slate-400 hover:text-slate-200"
+              className={`px-2.5 py-0.5 rounded text-xs transition-colors ${
+                filterType === "unknown" ? "bg-amber-500/20 text-amber-300 font-medium" : "text-white/40 hover:text-white"
               }`}
             >
               Unknown
@@ -158,23 +155,23 @@ export const MoversPanel: React.FC<MoversPanelProps> = ({
           </div>
         </div>
 
-        {/* Search input & Sort dropdown */}
+        {/* Minimal Search & Sort */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div className="relative">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by ID or name..."
+              placeholder="Filter by ID or name..."
               aria-label="Filter movers by ID or name"
-              className="w-full bg-slate-950 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              className="w-full bg-black/40 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white placeholder-white/30 focus:outline-none focus:border-cyan-400"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
                 aria-label="Clear search"
-                className="absolute right-2 top-1.5 text-xs text-slate-400 hover:text-slate-200"
+                className="absolute right-2 top-1 text-xs text-white/40 hover:text-white"
               >
                 ✕
               </button>
@@ -185,13 +182,13 @@ export const MoversPanel: React.FC<MoversPanelProps> = ({
             value={sortKey}
             onChange={(e) => setSortKey(e.target.value as MoverSortKey)}
             aria-label="Sort movers list by"
-            className="w-full bg-slate-950 border border-slate-700/80 rounded-lg px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            className="w-full bg-black/40 border border-white/10 rounded-lg px-2 py-1 text-xs text-white/80 focus:outline-none focus:border-cyan-400"
           >
-            <option value="confidence_desc">Confidence (Highest first)</option>
-            <option value="confidence_asc">Confidence (Lowest first)</option>
-            <option value="rate_desc">Speed / Motion Rate (Fastest)</option>
-            <option value="detections_desc">Detections Count (Most)</option>
-            <option value="name_asc">Name / Object ID (A - Z)</option>
+            <option value="confidence_desc">Confidence (High)</option>
+            <option value="confidence_asc">Confidence (Low)</option>
+            <option value="rate_desc">Speed (Fastest)</option>
+            <option value="detections_desc">Detections (Most)</option>
+            <option value="name_asc">Name (A-Z)</option>
           </select>
         </div>
 

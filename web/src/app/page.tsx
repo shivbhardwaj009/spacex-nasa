@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { SidePanel } from "@/components/layout/SidePanel";
@@ -31,7 +31,22 @@ export default function SkyDiaryApp() {
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
   const [isDemoTourOpen, setIsDemoTourOpen] = useState<boolean>(false);
   const [isGlobalShareOpen, setIsGlobalShareOpen] = useState<boolean>(false);
-  const [isTimeControlsOpen, setIsTimeControlsOpen] = useState<boolean>(true);
+  const [isTimeControlsOpen, setIsTimeControlsOpen] = useState<boolean>(false);
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+
+  // Keyboard shortcut '/' to trigger search dialog
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "/" && !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement)?.tagName)) {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      } else if (e.key === "Escape") {
+        setIsSearchOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Load curated offline demo data in demo mode, or master dataset
   const dataUrl = urlState.demo ? "/demo/candidates.json" : "/data/candidates.json";
@@ -167,108 +182,42 @@ export default function SkyDiaryApp() {
   }
 
   /* =========================================================
-     FULL APPLICATION SHELL
+     FULL APPLICATION SHELL (Ultra-Minimal NASA Eyes Style)
      ========================================================= */
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden bg-space-950">
-      {/* 1. Top Bar */}
+    <div className="h-screen w-screen flex flex-col overflow-hidden bg-black text-white select-none relative">
+      {/* 1. NASA Eyes Top Minimalist Header */}
       <AppHeader
         isSynthetic={isSynthetic}
         beginnerMode={beginnerMode}
         onToggleBeginnerMode={() => setBeginnerMode(!beginnerMode)}
-        searchQuery=""
-        onSearchChange={() => {}}
-        onSearchSubmit={(e) => e.preventDefault()}
         candidateCount={catalog.movers.length}
         onOpenTour={() => setIsTourOpen(true)}
         onOpenShare={() => setIsGlobalShareOpen(true)}
+        onOpenSearch={() => setIsSearchOpen(true)}
+        activeTargetName={catalog?.region?.name || "SPHEREx NEP Field"}
+        isDemo={urlState.demo}
+        onToggleDemo={() => setUrlState({ demo: !urlState.demo })}
       />
 
-      {/* Demo Mode Honesty Banner */}
+      {/* Demo Mode Honesty Banner (Slim & Unobtrusive) */}
       {urlState.demo && (
-        <div className="w-full bg-amber-950/90 border-b border-amber-500/50 py-1.5 px-4 text-center text-xs font-mono text-amber-200 flex items-center justify-between gap-2 z-40 shrink-0">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="text-amber-400 font-bold shrink-0">⚠</span>
+        <div className="w-full bg-amber-950/70 border-b border-amber-500/20 py-1 px-6 text-center text-[11px] font-mono text-amber-200/90 flex items-center justify-between gap-2 z-40 shrink-0">
+          <div className="flex items-center gap-2 truncate">
+            <span className="text-amber-400">⚠</span>
             <span className="truncate">
-              DEMO MODE ACTIVE: Using offline synthetic benchmark data (SPHEREx Deep Field North). TEST DATA badge active on all views.
+              DEMO BENCHMARK: SPHEREx Deep Field North (Synthetic Dataset).
             </span>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
+          <button
+            type="button"
             onClick={() => setIsDemoTourOpen(true)}
-            className="text-xs py-0.5 px-2.5 min-h-[28px] border-amber-500/50 text-amber-300 hover:border-amber-400 shrink-0"
+            className="text-[10px] uppercase tracking-wider text-amber-300 hover:text-white px-2 py-0.5 rounded border border-amber-500/30 hover:bg-amber-500/20 shrink-0 font-sans cursor-pointer"
           >
-            ▶ 3-Min Pitch Tour
-          </Button>
+            ▶ Pitch Tour
+          </button>
         </div>
       )}
-
-      {/* Secondary Controls Bar: Coordinate Search, Mode, Demo Switch, Trails */}
-      <div className="px-4 py-2 border-b border-white/10 glass-panel-subtle flex flex-wrap items-center justify-between gap-3 shrink-0 z-20">
-        {/* Coordinate & Target SearchBox */}
-        <div className="flex-1 max-w-xl">
-          <SearchBox
-            onCoordinateSelect={handleSearchCoordinate}
-            isDemo={urlState.demo}
-          />
-        </div>
-
-        {/* Mode Switches: Viewer vs Blink, Trails, Demo Mode */}
-        <div className="flex items-center gap-2">
-          {/* Mode Selector */}
-          <div className="flex items-center rounded-xl bg-space-900 border border-white/10 p-0.5 text-xs font-mono">
-            <button
-              type="button"
-              onClick={() => setUrlState({ mode: "viewer" })}
-              className={`min-h-[32px] px-3 py-1 rounded-lg transition-colors ${
-                urlState.mode === "viewer"
-                  ? "bg-cyan-500 text-space-950 font-bold"
-                  : "text-space-300 hover:text-white"
-              }`}
-            >
-              Sky Viewer
-            </button>
-            <button
-              type="button"
-              onClick={() => setUrlState({ mode: "blink" })}
-              className={`min-h-[32px] px-3 py-1 rounded-lg transition-colors ${
-                urlState.mode === "blink"
-                  ? "bg-cyan-500 text-space-950 font-bold"
-                  : "text-space-300 hover:text-white"
-              }`}
-            >
-              Blink Comparator
-            </button>
-          </div>
-
-          {/* Motion Trails Toggle */}
-          <button
-            type="button"
-            onClick={() => setUrlState({ trails: !urlState.trails })}
-            className={`min-h-[36px] px-3 py-1 rounded-xl text-xs font-mono border transition-colors ${
-              urlState.trails
-                ? "bg-cyan-950/60 border-cyan-500/50 text-cyan-300"
-                : "bg-space-900 border-white/10 text-space-400"
-            }`}
-          >
-            Trails: {urlState.trails ? "ON" : "OFF"}
-          </button>
-
-          {/* Demo Mode Toggle (Forces offline plain canvas & local targets) */}
-          <button
-            type="button"
-            onClick={() => setUrlState({ demo: !urlState.demo })}
-            className={`min-h-[36px] px-3 py-1 rounded-xl text-xs font-mono border transition-colors ${
-              urlState.demo
-                ? "bg-amber-950/70 border-amber-500/50 text-amber-300 font-bold"
-                : "bg-space-900 border-white/10 text-space-400"
-            }`}
-          >
-            Demo: {urlState.demo ? "OFFLINE" : "ONLINE"}
-          </button>
-        </div>
-      </div>
 
       {/* 2. Main NASA Eyes Workspace */}
       <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
@@ -335,70 +284,72 @@ export default function SkyDiaryApp() {
               />
             </div>
 
-            {/* Right NASA HUD Vertical Action Palette */}
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 z-30 hidden md:flex flex-col gap-2 p-1.5 rounded-2xl bg-black/75 backdrop-blur-md border border-white/15 shadow-2xl">
-              {/* Mode Toggle (Viewer vs Blink) */}
-              <Tooltip content={urlState.mode === "viewer" ? "Switch to Blink Comparator" : "Switch to Sky Viewer"} position="left">
+            {/* Right Vertical Minimal Tool Strip (NASA Eyes Palette) */}
+            <div className="absolute right-4 bottom-24 z-30 flex flex-col gap-2.5 p-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-white/70 shadow-2xl">
+              <Tooltip content={selectedMover ? "Close Details" : "Mover Details"} position="left">
                 <button
                   type="button"
-                  onClick={() => setUrlState({ mode: urlState.mode === "viewer" ? "blink" : "viewer" })}
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
-                    urlState.mode === "blink"
-                      ? "bg-cyan-500 text-black font-bold shadow-lg shadow-cyan-500/40"
-                      : "text-space-300 hover:text-white hover:bg-white/10"
+                  onClick={() => setUrlState({ object: selectedMover ? null : movers[0]?.object_id })}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+                    selectedMover ? "text-cyan-400 font-bold bg-white/10" : "hover:text-white hover:bg-white/10"
                   }`}
-                  aria-label="Toggle Blink Mode"
+                  aria-label="Object Info"
                 >
-                  <span className="text-base">⚡</span>
+                  <span className="text-xs font-serif italic">ⓘ</span>
                 </button>
               </Tooltip>
 
-              {/* Motion Trails Toggle */}
-              <Tooltip content={urlState.trails ? "Hide Trajectory Trails" : "Show Trajectory Trails"} position="left">
+              <Tooltip content={urlState.trails ? "Hide Trails" : "Show Trails"} position="left">
                 <button
                   type="button"
                   onClick={() => setUrlState({ trails: !urlState.trails })}
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
-                    urlState.trails
-                      ? "bg-cyan-950/80 border border-cyan-400 text-cyan-300 shadow-md shadow-cyan-950/60"
-                      : "text-space-400 hover:text-white hover:bg-white/10"
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+                    urlState.trails ? "text-cyan-400 bg-white/10" : "hover:text-white hover:bg-white/10"
                   }`}
-                  aria-label="Toggle Orbit Trails"
+                  aria-label="Toggle Trails"
                 >
-                  <span className="text-sm">✨</span>
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                  </svg>
                 </button>
               </Tooltip>
 
-              <div className="h-px w-6 bg-white/10 mx-auto my-0.5" />
-
-              {/* Zoom In (Decrease FOV) */}
-              <Tooltip content="Zoom In (Narrow Field)" position="left">
+              <Tooltip content="Zoom In" position="left">
                 <button
                   type="button"
                   onClick={() => setUrlState({ fov: Math.max(0.02, +(urlState.fov * 0.7).toFixed(3)) })}
-                  className="w-9 h-9 rounded-xl flex items-center justify-center text-space-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                  className="w-8 h-8 rounded-full flex items-center justify-center hover:text-white hover:bg-white/10 transition-colors font-mono font-bold text-sm cursor-pointer"
                   aria-label="Zoom In"
                 >
-                  <span className="text-lg font-bold font-mono">+</span>
+                  +
                 </button>
               </Tooltip>
 
-              {/* Zoom Out (Increase FOV) */}
-              <Tooltip content="Zoom Out (Wide Field)" position="left">
+              <Tooltip content="Zoom Out" position="left">
                 <button
                   type="button"
                   onClick={() => setUrlState({ fov: Math.min(5.0, +(urlState.fov * 1.4).toFixed(3)) })}
-                  className="w-9 h-9 rounded-xl flex items-center justify-center text-space-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                  className="w-8 h-8 rounded-full flex items-center justify-center hover:text-white hover:bg-white/10 transition-colors font-mono font-bold text-sm cursor-pointer"
                   aria-label="Zoom Out"
                 >
-                  <span className="text-lg font-bold font-mono">−</span>
+                  −
                 </button>
               </Tooltip>
 
-              <div className="h-px w-6 bg-white/10 mx-auto my-0.5" />
+              <Tooltip content={urlState.mode === "viewer" ? "Blink Mode" : "Sky Mode"} position="left">
+                <button
+                  type="button"
+                  onClick={() => setUrlState({ mode: urlState.mode === "viewer" ? "blink" : "viewer" })}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+                    urlState.mode === "blink" ? "text-cyan-400 bg-white/10" : "hover:text-white hover:bg-white/10"
+                  }`}
+                  aria-label="Toggle Blink Mode"
+                >
+                  ⚡
+                </button>
+              </Tooltip>
 
-              {/* Fullscreen Toggle */}
-              <Tooltip content="Toggle Fullscreen" position="left">
+              <Tooltip content="Fullscreen" position="left">
                 <button
                   type="button"
                   onClick={() => {
@@ -410,47 +361,48 @@ export default function SkyDiaryApp() {
                       }
                     }
                   }}
-                  className="w-9 h-9 rounded-xl flex items-center justify-center text-space-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                  className="w-8 h-8 rounded-full flex items-center justify-center hover:text-white hover:bg-white/10 transition-colors text-xs cursor-pointer"
                   aria-label="Toggle Fullscreen"
                 >
-                  <span className="text-sm">⤢</span>
+                  ⤢
                 </button>
               </Tooltip>
             </div>
 
-            {/* Bottom-Left NASA Eyes "● LIVE" Indicator */}
-            <div className="absolute bottom-4 left-4 z-20 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-xs font-mono text-white select-none shadow-2xl">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-              </span>
-              <span className="font-bold tracking-widest text-emerald-400 text-[11px]">LIVE</span>
-              <span className="text-white/20">|</span>
-              <span className="text-space-300 text-[10px] tracking-wide uppercase">
-                {catalog?.region?.name || "SPHEREx NEP Field"} ({urlState.ra.toFixed(2)}°, {urlState.dec.toFixed(2)}°)
+            {/* Bottom-Left NASA Eyes "● LIVE" Indicator (Exact Match to Photo) */}
+            <div className="absolute bottom-6 left-6 z-20 flex items-center gap-2 select-none pointer-events-none">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400 animate-pulse" />
+              <span className="text-xs font-sans font-bold tracking-widest text-emerald-400 uppercase">
+                LIVE
               </span>
             </div>
 
-            {/* Bottom Floating NASA Eyes "TIME CONTROLS" Drawer */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center max-w-[95vw] md:max-w-3xl w-full pointer-events-auto">
-              {/* Collapsible Tab Header: ▲ TIME CONTROLS */}
+            {/* Bottom-Center Minimal TIME CONTROLS (Exact Match to Photo) */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center pointer-events-auto">
               <button
                 type="button"
                 onClick={() => setIsTimeControlsOpen(!isTimeControlsOpen)}
-                className="px-4 py-1.5 rounded-t-xl bg-black/85 hover:bg-black/95 backdrop-blur-md border-t border-x border-white/20 text-xs font-mono text-white shadow-2xl flex items-center gap-2 transition-all cursor-pointer"
+                className="group flex flex-col items-center gap-0.5 text-white/70 hover:text-white transition-colors cursor-pointer select-none py-1 px-3"
                 aria-expanded={isTimeControlsOpen}
                 aria-label="Toggle Time Controls Drawer"
               >
-                <span className="text-cyan-400 font-bold">{isTimeControlsOpen ? "▼" : "▲"}</span>
-                <span className="tracking-widest uppercase font-semibold text-[11px] font-sans">Time Controls</span>
-                <span className="text-space-400 text-[10px]">
-                  ({epochs[urlState.epoch]?.epoch_id || `Epoch ${urlState.epoch + 1}`} · {epochs[urlState.epoch]?.date?.slice(0, 10) || "2025-04-15"})
+                <svg
+                  className={`w-3.5 h-3.5 text-white/50 group-hover:text-white transition-transform ${isTimeControlsOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                </svg>
+                <span className="text-[10px] md:text-xs font-sans tracking-widest uppercase font-medium">
+                  TIME CONTROLS
                 </span>
               </button>
 
-              {/* Drawer Body */}
+              {/* Sliding Drawer Container */}
               {isTimeControlsOpen && (
-                <div className="w-full p-2.5 rounded-b-2xl rounded-t-lg bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl">
+                <div className="mt-2 w-[92vw] max-w-3xl p-3 rounded-2xl bg-black/85 backdrop-blur-xl border border-white/10 shadow-2xl">
                   {urlState.mode === "viewer" ? (
                     <TimeBar
                       epochs={epochs}
@@ -470,6 +422,34 @@ export default function SkyDiaryApp() {
           </div>
         </div>
       </main>
+
+      {/* Floating Spotlight Search Dialog (Hotkeyed to / or Q) */}
+      {isSearchOpen && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/75 backdrop-blur-sm">
+          <div className="absolute inset-0" onClick={() => setIsSearchOpen(false)} />
+          <div className="relative w-full max-w-xl p-4 rounded-2xl bg-[#0a0f1d] border border-white/15 shadow-2xl z-10 space-y-3">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2">
+              <span className="text-xs uppercase tracking-widest text-space-300 font-mono font-semibold">
+                Target &amp; Coordinate Search
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsSearchOpen(false)}
+                className="text-white/40 hover:text-white font-mono text-xs px-2 cursor-pointer"
+              >
+                ESC
+              </button>
+            </div>
+            <SearchBox
+              onCoordinateSelect={(coords) => {
+                handleSearchCoordinate(coords);
+                setIsSearchOpen(false);
+              }}
+              isDemo={urlState.demo}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Guided Tour Walkthrough Dialog */}
       <BeginnerTour
