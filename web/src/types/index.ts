@@ -11,6 +11,7 @@ export * from "./schema";
 export type CandidateCatalog = SPHERExSkyDiaryContractSchema;
 export type MoverCandidate = SPHERExSkyDiaryContractSchema["movers"][number];
 export type Detection = MoverCandidate["detections"][number];
+export type MoverDetection = Detection;
 export type Spectrum = NonNullable<MoverCandidate["spectrum"]>;
 export type EpochInfo = SPHERExSkyDiaryContractSchema["epochs"][number];
 export type RegionInfo = SPHERExSkyDiaryContractSchema["region"];

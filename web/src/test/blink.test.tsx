@@ -53,3 +53,4 @@ describe("BlinkComparator Component (web/src/components/time/BlinkComparator.tsx
     expect(screen.getByText(/Difference View Active/i)).toBeInTheDocument();
   });
 });
+

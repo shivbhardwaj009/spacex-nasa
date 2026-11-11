@@ -77,3 +77,4 @@ describe("Axe Accessibility Audits (Module 7 UI Controls)", () => {
     expect(seriousOrCritical).toEqual([]);
   });
 });
+

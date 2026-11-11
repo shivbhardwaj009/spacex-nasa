@@ -52,3 +52,4 @@ describe("URL State Round-Trip & Fallback (web/src/lib/useUrlState.ts)", () => {
     expect(state.fallbackNotice).toBeTruthy();
   });
 });
+

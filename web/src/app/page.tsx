@@ -7,6 +7,8 @@ import { SidePanel } from "@/components/layout/SidePanel";
 import { SearchBox, FovControl } from "@/components/viewer";
 import { TimeBar, BlinkComparator } from "@/components/time";
 import { Button, Card, TestDataBadge } from "@/components/ui";
+import { BeginnerTour } from "@/components/beginner";
+import { ShareModal } from "@/components/share";
 import { useCandidateCatalog } from "@/lib/client";
 import { useUrlState } from "@/lib/useUrlState";
 
@@ -30,6 +32,8 @@ export default function SkyDiaryApp() {
 
   const [urlState, setUrlState] = useUrlState();
   const [beginnerMode, setBeginnerMode] = useState<boolean>(true);
+  const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
+  const [isGlobalShareOpen, setIsGlobalShareOpen] = useState<boolean>(false);
 
   const epochs = catalog?.epochs || [];
   const movers = catalog?.movers || [];
@@ -40,7 +44,16 @@ export default function SkyDiaryApp() {
     : null;
 
   const handleSelectObjectId = (objectId: string) => {
-    setUrlState({ object: objectId === urlState.object ? null : objectId });
+    const isDesel = objectId === urlState.object;
+    if (isDesel) {
+      setUrlState({ object: null });
+    } else {
+      const match = movers.find((m) => m.object_id === objectId);
+      setUrlState({
+        object: objectId,
+        ...(match ? { ra: match.ra, dec: match.dec } : {}),
+      });
+    }
   };
 
   const handleSearchCoordinate = (coords: { ra: number; dec: number; fov?: number }) => {
@@ -163,6 +176,8 @@ export default function SkyDiaryApp() {
         onSearchChange={() => {}}
         onSearchSubmit={(e) => e.preventDefault()}
         candidateCount={catalog.movers.length}
+        onOpenTour={() => setIsTourOpen(true)}
+        onOpenShare={() => setIsGlobalShareOpen(true)}
       />
 
       {/* Secondary Controls Bar: Coordinate Search, Mode, Demo Switch, Trails */}
@@ -289,11 +304,42 @@ export default function SkyDiaryApp() {
         <SidePanel
           movers={movers}
           selectedMover={selectedMover}
-          onSelectMover={(mover) => setUrlState({ object: mover ? mover.object_id : null })}
+          onSelectMover={(mover) => {
+            if (mover) {
+              setUrlState({
+                object: mover.object_id,
+                ra: mover.ra,
+                dec: mover.dec,
+              });
+            } else {
+              setUrlState({ object: null });
+            }
+          }}
           beginnerMode={beginnerMode}
-          searchFilter=""
+          selectedEpochId={epochs[urlState.epoch]?.epoch_id}
+          onSelectEpoch={(epochId) => {
+            const idx = epochs.findIndex((e) => e.epoch_id === epochId);
+            if (idx !== -1) {
+              setUrlState({ epoch: idx });
+            }
+          }}
+          regionName={catalog?.region?.name}
         />
       </main>
+
+      {/* Guided Tour Walkthrough Dialog */}
+      <BeginnerTour
+        isOpen={isTourOpen}
+        onClose={() => setIsTourOpen(false)}
+      />
+
+      {/* Global Share Dialog */}
+      <ShareModal
+        isOpen={isGlobalShareOpen}
+        onClose={() => setIsGlobalShareOpen(false)}
+        mover={selectedMover}
+        regionName={catalog?.region?.name}
+      />
     </div>
   );
 }

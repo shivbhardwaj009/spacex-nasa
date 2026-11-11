@@ -33,3 +33,4 @@ test.describe("SPHEREx Sky Diary - Module 7 Smoke Test", () => {
     await expect(page.locator("aside")).toContainText("Spectrum");
   });
 });
+

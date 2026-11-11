@@ -12,6 +12,8 @@ export interface AppHeaderProps {
   onSearchChange: (query: string) => void;
   onSearchSubmit: (e: React.FormEvent) => void;
   candidateCount?: number;
+  onOpenTour?: () => void;
+  onOpenShare?: () => void;
 }
 
 export function AppHeader({
@@ -22,6 +24,8 @@ export function AppHeader({
   onSearchChange,
   onSearchSubmit,
   candidateCount = 0,
+  onOpenTour,
+  onOpenShare,
 }: AppHeaderProps) {
   return (
     <header className="h-16 md:h-18 px-4 md:px-6 border-b border-white/10 glass-panel-subtle flex items-center justify-between gap-3 shrink-0 z-30">
@@ -103,7 +107,7 @@ export function AppHeader({
             type="search"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder={`Search ${candidateCount} movers by RA, Dec or designation (e.g. 269.45, Ceres)...`}
+            placeholder={`Search ${candidateCount} movers by RA, Dec or designation...`}
             className="w-full min-h-[44px] pl-9 pr-10 py-2 text-xs md:text-sm font-mono rounded-xl bg-space-950/80 border border-white/10 text-space-100 placeholder-space-400 transition-all focus:border-cyan-400 focus:bg-space-900 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
           />
           {searchQuery && (
@@ -125,7 +129,7 @@ export function AppHeader({
         </div>
       </form>
 
-      {/* Right Controls: Mode Toggle, Design System Link, Status */}
+      {/* Right Controls: Mode Toggle, Tour, Share, Design System Link */}
       <div className="flex items-center gap-2 md:gap-3 shrink-0">
         {/* Beginner vs Scientific Mode Toggle */}
         <Tooltip
@@ -154,6 +158,34 @@ export function AppHeader({
             </span>
           </button>
         </Tooltip>
+
+        {/* Guided Tour Trigger Button */}
+        {onOpenTour && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onOpenTour}
+            className="min-h-[44px] px-3 text-xs gap-1 border-white/10 text-cyan-300 hover:border-cyan-400"
+            aria-label="Start guided walkthrough tour"
+          >
+            <span>🧭</span>
+            <span className="hidden md:inline">Tour</span>
+          </Button>
+        )}
+
+        {/* Share Button */}
+        {onOpenShare && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onOpenShare}
+            className="min-h-[44px] px-3 text-xs gap-1 border-white/10 text-amber-300 hover:border-amber-400"
+            aria-label="Share current sky view"
+          >
+            <span>🔗</span>
+            <span className="hidden md:inline">Share</span>
+          </Button>
+        )}
 
         {/* Link to Design System Catalog */}
         <Link href="/design" tabIndex={-1}>

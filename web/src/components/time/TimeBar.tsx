@@ -250,3 +250,4 @@ export function TimeBar({
     </div>
   );
 }
+

@@ -125,3 +125,4 @@ describe("MoverOverlay Component (web/src/components/viewer/MoverOverlay.tsx)", 
     expect(handleSelect).toHaveBeenCalledWith("SPX-MOV-0001");
   });
 });
+

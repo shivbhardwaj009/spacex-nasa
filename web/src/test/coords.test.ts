@@ -91,3 +91,4 @@ describe("Coordinate Parser (web/src/lib/coords.ts)", () => {
     expect(formattedSex).toContain("-00d30m");
   });
 });
+
