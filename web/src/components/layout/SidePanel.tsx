@@ -26,11 +26,13 @@ export function SidePanel({
   regionName = "SPHEREx Deep Field",
 }: SidePanelProps) {
   const [mobileExpanded, setMobileExpanded] = useState<boolean>(false);
+  const [desktopCollapsed, setDesktopCollapsed] = useState<boolean>(false);
 
-  // If a mover is selected, automatically expand mobile drawer so user sees details
+  // If a mover is selected, automatically expand drawer so user sees details
   useEffect(() => {
     if (selectedMover) {
       setMobileExpanded(true);
+      setDesktopCollapsed(false);
     }
   }, [selectedMover]);
 
@@ -53,14 +55,53 @@ export function SidePanel({
     }
   };
 
+  // If desktop is collapsed, show sleek NASA Eyes floating tab
+  if (desktopCollapsed) {
+    return (
+      <div className="hidden md:flex absolute top-20 left-4 z-30">
+        <button
+          type="button"
+          onClick={() => setDesktopCollapsed(false)}
+          className="flex items-center gap-2 px-3 py-2 rounded-xl bg-black/75 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white shadow-2xl transition-all group"
+          title="Expand Featured Movers"
+        >
+          <span className="font-mono text-cyan-400 group-hover:translate-x-0.5 transition-transform">»</span>
+          <span className="text-xs font-sans tracking-wide uppercase font-semibold">
+            Movers ({movers.length})
+          </span>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <aside
-      className={`glass-panel border-t md:border-t-0 md:border-l border-white/10 flex flex-col transition-all duration-300 z-30 ${
+      className={`glass-panel border-t md:border-t-0 md:border-r border-white/10 flex flex-col transition-all duration-300 z-30 ${
         mobileExpanded
-          ? "fixed inset-x-0 bottom-0 h-[85vh] md:relative md:h-full md:w-[420px] lg:w-[470px]"
-          : "fixed inset-x-0 bottom-0 h-16 md:relative md:h-full md:w-[420px] lg:w-[470px]"
+          ? "fixed inset-x-0 bottom-0 h-[85vh] md:relative md:h-full md:w-[420px] lg:w-[460px]"
+          : "fixed inset-x-0 bottom-0 h-16 md:relative md:h-full md:w-[420px] lg:w-[460px]"
       }`}
     >
+      {/* Desktop NASA Eyes Panel Header */}
+      <div className="hidden md:flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/40">
+        <div className="flex items-center gap-2">
+          <span className="text-xs uppercase tracking-widest text-space-300 font-semibold font-sans">
+            {selectedMover ? "Mover Analysis & SED" : "Featured Movers & Targets"}
+          </span>
+          <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-white/10 text-cyan-300">
+            {movers.length}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={() => setDesktopCollapsed(true)}
+          className="text-space-400 hover:text-white text-xs px-2 py-1 rounded hover:bg-white/10 transition-colors font-mono"
+          title="Collapse Panel"
+        >
+          «
+        </button>
+      </div>
+
       {/* Mobile drag handle & toggle bar */}
       <div
         className="md:hidden flex items-center justify-between px-4 py-2 bg-space-900 border-b border-white/10 cursor-pointer select-none shrink-0 min-h-[44px]"

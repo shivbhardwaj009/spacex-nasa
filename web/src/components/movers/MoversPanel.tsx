@@ -271,29 +271,67 @@ export const MoversPanel: React.FC<MoversPanelProps> = ({
                 )}%, motion ${totalRate.toFixed(1)} arcseconds per day`}
                 onClick={() => onSelectMover(m)}
                 onKeyDown={(e) => handleCardKeyDown(e, idx, m)}
-                className={`flex gap-3 p-2.5 rounded-lg border cursor-pointer transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-cyan-400 select-none ${
+                className={`group relative flex items-center justify-between gap-3 p-3.5 rounded-xl border cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-400 select-none ${
                   isSelected
-                    ? "border-cyan-400 bg-cyan-950/40 shadow-lg shadow-cyan-950/60 ring-1 ring-cyan-400"
-                    : "border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-slate-700"
+                    ? "border-cyan-400 bg-cyan-950/50 shadow-xl shadow-cyan-950/70 ring-1 ring-cyan-400/60"
+                    : "border-white/10 bg-black/50 hover:bg-white/[0.07] hover:border-white/20"
                 }`}
               >
-                {/* Thumbnail Cutout from First Detection */}
-                <div className="relative w-16 h-16 shrink-0 rounded bg-slate-950 overflow-hidden border border-slate-800 flex items-center justify-center">
+                {/* Left Card Info */}
+                <div className="flex-1 min-w-0 flex flex-col justify-between gap-1.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex flex-col min-w-0">
+                      <span className="font-sans text-sm font-bold text-white tracking-wide truncate group-hover:text-cyan-200">
+                        {m.object_id}
+                      </span>
+                      <span className="text-xs text-cyan-300/90 font-medium truncate">
+                        {m.match_name || "Catalog-Unmatched Candidate"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1 shrink-0">
+                      <Badge variant={isKnown ? "known" : "unknown"} size="sm">
+                        {isKnown ? "Known" : "Unknown"}
+                      </Badge>
+                      {m.is_synthetic && (
+                        <Badge variant="test-data" size="sm">
+                          TEST
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* NASA Eyes style wide tracking uppercase metadata */}
+                  <div className="text-[10px] font-mono tracking-widest uppercase text-space-300 flex flex-wrap items-center gap-2">
+                    <span className={isKnown ? "text-cyan-400 font-semibold" : "text-amber-400 font-semibold"}>
+                      {isKnown ? "CATALOG MATCH" : "NEW CANDIDATE"}
+                    </span>
+                    <span className="text-white/20">·</span>
+                    <span>{totalRate.toFixed(1)}&quot;/D {compass}</span>
+                    <span className="text-white/20">·</span>
+                    <span>{m.detections?.length || 0} EPOCHS</span>
+                  </div>
+
+                  <ConfidenceBar value={m.confidence} size="sm" showLabel={true} />
+                </div>
+
+                {/* Right Thumbnail Cutout styled like NASA Eyes spacecraft previews */}
+                <div className="relative w-16 h-16 shrink-0 rounded-lg bg-black/80 overflow-hidden border border-white/10 flex items-center justify-center shadow-inner group-hover:border-cyan-500/40 transition-colors">
                   {rawCutout ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src={cutoutSrc}
                       alt={`Thumbnail for ${m.object_id}`}
-                      className="w-full h-full object-cover filter contrast-110 brightness-105"
+                      className="w-full h-full object-cover filter contrast-125 brightness-110"
                       loading="lazy"
                     />
                   ) : (
-                    <span className="text-xl">🌌</span>
+                    <span className="text-2xl">☄️</span>
                   )}
 
-                  {/* Motion arrow marker */}
+                  {/* Motion direction vector overlay */}
                   <div
-                    className="absolute top-1 right-1 w-4 h-4 rounded-full bg-slate-950/80 flex items-center justify-center pointer-events-none"
+                    className="absolute top-1 right-1 w-4 h-4 rounded-full bg-black/75 flex items-center justify-center pointer-events-none border border-white/10"
                     title={`Angle ${Math.round(pa)}°`}
                   >
                     <svg
@@ -315,43 +353,6 @@ export const MoversPanel: React.FC<MoversPanelProps> = ({
                       <polyline points="5 12 12 5 19 12" />
                     </svg>
                   </div>
-                </div>
-
-                {/* Card Main Info */}
-                <div className="flex-1 min-w-0 flex flex-col justify-between gap-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex flex-col min-w-0">
-                      <span className="font-mono text-xs font-bold text-white truncate">
-                        {m.object_id}
-                      </span>
-                      <span className="text-[11px] text-cyan-300 font-semibold truncate">
-                        {m.match_name || "Unmatched candidate"}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-1 shrink-0">
-                      <Badge variant={isKnown ? "known" : "unknown"} size="sm">
-                        {isKnown ? "Known" : "Unknown"}
-                      </Badge>
-                      {m.is_synthetic && (
-                        <Badge variant="test-data" size="sm">
-                          TEST
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Motion rate & Confidence Bar */}
-                  <div className="flex items-center justify-between text-[11px] text-slate-400">
-                    <span className="font-mono text-slate-300">
-                      {totalRate.toFixed(1)} &quot;/d ({compass})
-                    </span>
-                    <span className="text-[10px] text-slate-500">
-                      {m.detections?.length || 0} epochs
-                    </span>
-                  </div>
-
-                  <ConfidenceBar value={m.confidence} size="sm" showLabel={true} />
                 </div>
               </article>
             );

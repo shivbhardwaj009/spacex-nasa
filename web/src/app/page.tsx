@@ -6,7 +6,7 @@ import { AppHeader } from "@/components/layout/AppHeader";
 import { SidePanel } from "@/components/layout/SidePanel";
 import { SearchBox, FovControl } from "@/components/viewer";
 import { TimeBar, BlinkComparator } from "@/components/time";
-import { Button, Card, TestDataBadge, ErrorBoundary } from "@/components/ui";
+import { Button, Card, TestDataBadge, ErrorBoundary, Tooltip } from "@/components/ui";
 import { BeginnerTour, DemoTourBar } from "@/components/beginner";
 import { ShareModal } from "@/components/share";
 import { useCandidateCatalog } from "@/lib/client";
@@ -31,6 +31,7 @@ export default function SkyDiaryApp() {
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
   const [isDemoTourOpen, setIsDemoTourOpen] = useState<boolean>(false);
   const [isGlobalShareOpen, setIsGlobalShareOpen] = useState<boolean>(false);
+  const [isTimeControlsOpen, setIsTimeControlsOpen] = useState<boolean>(true);
 
   // Load curated offline demo data in demo mode, or master dataset
   const dataUrl = urlState.demo ? "/demo/candidates.json" : "/data/candidates.json";
@@ -269,63 +270,9 @@ export default function SkyDiaryApp() {
         </div>
       </div>
 
-      {/* 2. Main Workspace */}
+      {/* 2. Main NASA Eyes Workspace */}
       <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
-        {/* Left / Center: Sky View & Time Controls Area */}
-        <div className="flex-1 flex flex-col h-full overflow-hidden relative">
-          {/* Fallback Notice Banner if URL params were invalid */}
-          {urlState.fallbackNotice && (
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 z-40 px-3 py-1 rounded-lg bg-amber-950/80 border border-amber-500/50 text-[11px] font-mono text-amber-200 shadow-xl">
-              {urlState.fallbackNotice}
-            </div>
-          )}
-
-          {/* Interactive Sky Viewer or Blink Comparator */}
-          <div className="flex-1 relative w-full h-full overflow-hidden">
-            <ErrorBoundary fallbackTitle="Sky Viewer Error">
-              <DynamicSkyViewer
-                ra={urlState.ra}
-                dec={urlState.dec}
-                fov={urlState.fov}
-                onMove={(ra, dec, fov) => setUrlState({ ra, dec, fov })}
-                movers={movers}
-                selectedObjectId={urlState.object}
-                epochIndex={urlState.epoch}
-                epochs={epochs}
-                onSelect={handleSelectObjectId}
-                showTrails={urlState.trails}
-                isDemo={urlState.demo}
-              />
-            </ErrorBoundary>
-
-            {/* Field of View Floating Preset Overlay */}
-            <div className="absolute top-3 left-3 z-30 max-w-xs">
-              <FovControl
-                fov={urlState.fov}
-                onFovChange={(newFov) => setUrlState({ fov: newFov })}
-              />
-            </div>
-          </div>
-
-          {/* Bottom Time Controls Area: TimeBar or BlinkComparator */}
-          <div className="p-3 border-t border-white/10 glass-panel-subtle shrink-0 z-20">
-            {urlState.mode === "viewer" ? (
-              <TimeBar
-                epochs={epochs}
-                currentEpochIndex={urlState.epoch}
-                onEpochChange={(epoch) => setUrlState({ epoch })}
-              />
-            ) : (
-              <BlinkComparator
-                epochs={epochs}
-                currentEpochIndex={urlState.epoch}
-                onEpochChange={(epoch) => setUrlState({ epoch })}
-              />
-            )}
-          </div>
-        </div>
-
-        {/* Right Side Panel: Movers List & Inspector */}
+        {/* Left Floating SidePanel (NASA Eyes layout) */}
         <ErrorBoundary fallbackTitle="Movers Panel Error">
           <SidePanel
             movers={movers}
@@ -352,6 +299,176 @@ export default function SkyDiaryApp() {
             regionName={catalog?.region?.name}
           />
         </ErrorBoundary>
+
+        {/* Center / Full-Bleed Sky Canvas & HUD Overlays */}
+        <div className="flex-1 flex flex-col h-full overflow-hidden relative">
+          {/* Fallback Notice Banner if URL params were invalid */}
+          {urlState.fallbackNotice && (
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 z-40 px-3 py-1 rounded-lg bg-amber-950/80 border border-amber-500/50 text-[11px] font-mono text-amber-200 shadow-xl">
+              {urlState.fallbackNotice}
+            </div>
+          )}
+
+          {/* Interactive Celestial Sky Canvas */}
+          <div className="flex-1 relative w-full h-full overflow-hidden">
+            <ErrorBoundary fallbackTitle="Sky Viewer Error">
+              <DynamicSkyViewer
+                ra={urlState.ra}
+                dec={urlState.dec}
+                fov={urlState.fov}
+                onMove={(ra, dec, fov) => setUrlState({ ra, dec, fov })}
+                movers={movers}
+                selectedObjectId={urlState.object}
+                epochIndex={urlState.epoch}
+                epochs={epochs}
+                onSelect={handleSelectObjectId}
+                showTrails={urlState.trails}
+                isDemo={urlState.demo}
+              />
+            </ErrorBoundary>
+
+            {/* Field of View Floating Preset Overlay */}
+            <div className="absolute top-3 left-3 z-30 max-w-xs">
+              <FovControl
+                fov={urlState.fov}
+                onFovChange={(newFov) => setUrlState({ fov: newFov })}
+              />
+            </div>
+
+            {/* Right NASA HUD Vertical Action Palette */}
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 z-30 hidden md:flex flex-col gap-2 p-1.5 rounded-2xl bg-black/75 backdrop-blur-md border border-white/15 shadow-2xl">
+              {/* Mode Toggle (Viewer vs Blink) */}
+              <Tooltip content={urlState.mode === "viewer" ? "Switch to Blink Comparator" : "Switch to Sky Viewer"} position="left">
+                <button
+                  type="button"
+                  onClick={() => setUrlState({ mode: urlState.mode === "viewer" ? "blink" : "viewer" })}
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                    urlState.mode === "blink"
+                      ? "bg-cyan-500 text-black font-bold shadow-lg shadow-cyan-500/40"
+                      : "text-space-300 hover:text-white hover:bg-white/10"
+                  }`}
+                  aria-label="Toggle Blink Mode"
+                >
+                  <span className="text-base">⚡</span>
+                </button>
+              </Tooltip>
+
+              {/* Motion Trails Toggle */}
+              <Tooltip content={urlState.trails ? "Hide Trajectory Trails" : "Show Trajectory Trails"} position="left">
+                <button
+                  type="button"
+                  onClick={() => setUrlState({ trails: !urlState.trails })}
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                    urlState.trails
+                      ? "bg-cyan-950/80 border border-cyan-400 text-cyan-300 shadow-md shadow-cyan-950/60"
+                      : "text-space-400 hover:text-white hover:bg-white/10"
+                  }`}
+                  aria-label="Toggle Orbit Trails"
+                >
+                  <span className="text-sm">✨</span>
+                </button>
+              </Tooltip>
+
+              <div className="h-px w-6 bg-white/10 mx-auto my-0.5" />
+
+              {/* Zoom In (Decrease FOV) */}
+              <Tooltip content="Zoom In (Narrow Field)" position="left">
+                <button
+                  type="button"
+                  onClick={() => setUrlState({ fov: Math.max(0.02, +(urlState.fov * 0.7).toFixed(3)) })}
+                  className="w-9 h-9 rounded-xl flex items-center justify-center text-space-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                  aria-label="Zoom In"
+                >
+                  <span className="text-lg font-bold font-mono">+</span>
+                </button>
+              </Tooltip>
+
+              {/* Zoom Out (Increase FOV) */}
+              <Tooltip content="Zoom Out (Wide Field)" position="left">
+                <button
+                  type="button"
+                  onClick={() => setUrlState({ fov: Math.min(5.0, +(urlState.fov * 1.4).toFixed(3)) })}
+                  className="w-9 h-9 rounded-xl flex items-center justify-center text-space-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                  aria-label="Zoom Out"
+                >
+                  <span className="text-lg font-bold font-mono">−</span>
+                </button>
+              </Tooltip>
+
+              <div className="h-px w-6 bg-white/10 mx-auto my-0.5" />
+
+              {/* Fullscreen Toggle */}
+              <Tooltip content="Toggle Fullscreen" position="left">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (typeof document !== "undefined") {
+                      if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(() => {});
+                      } else {
+                        document.exitFullscreen().catch(() => {});
+                      }
+                    }
+                  }}
+                  className="w-9 h-9 rounded-xl flex items-center justify-center text-space-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                  aria-label="Toggle Fullscreen"
+                >
+                  <span className="text-sm">⤢</span>
+                </button>
+              </Tooltip>
+            </div>
+
+            {/* Bottom-Left NASA Eyes "● LIVE" Indicator */}
+            <div className="absolute bottom-4 left-4 z-20 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-xs font-mono text-white select-none shadow-2xl">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+              </span>
+              <span className="font-bold tracking-widest text-emerald-400 text-[11px]">LIVE</span>
+              <span className="text-white/20">|</span>
+              <span className="text-space-300 text-[10px] tracking-wide uppercase">
+                {catalog?.region?.name || "SPHEREx NEP Field"} ({urlState.ra.toFixed(2)}°, {urlState.dec.toFixed(2)}°)
+              </span>
+            </div>
+
+            {/* Bottom Floating NASA Eyes "TIME CONTROLS" Drawer */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center max-w-[95vw] md:max-w-3xl w-full pointer-events-auto">
+              {/* Collapsible Tab Header: ▲ TIME CONTROLS */}
+              <button
+                type="button"
+                onClick={() => setIsTimeControlsOpen(!isTimeControlsOpen)}
+                className="px-4 py-1.5 rounded-t-xl bg-black/85 hover:bg-black/95 backdrop-blur-md border-t border-x border-white/20 text-xs font-mono text-white shadow-2xl flex items-center gap-2 transition-all cursor-pointer"
+                aria-expanded={isTimeControlsOpen}
+                aria-label="Toggle Time Controls Drawer"
+              >
+                <span className="text-cyan-400 font-bold">{isTimeControlsOpen ? "▼" : "▲"}</span>
+                <span className="tracking-widest uppercase font-semibold text-[11px] font-sans">Time Controls</span>
+                <span className="text-space-400 text-[10px]">
+                  ({epochs[urlState.epoch]?.epoch_id || `Epoch ${urlState.epoch + 1}`} · {epochs[urlState.epoch]?.date?.slice(0, 10) || "2025-04-15"})
+                </span>
+              </button>
+
+              {/* Drawer Body */}
+              {isTimeControlsOpen && (
+                <div className="w-full p-2.5 rounded-b-2xl rounded-t-lg bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl">
+                  {urlState.mode === "viewer" ? (
+                    <TimeBar
+                      epochs={epochs}
+                      currentEpochIndex={urlState.epoch}
+                      onEpochChange={(epoch) => setUrlState({ epoch })}
+                    />
+                  ) : (
+                    <BlinkComparator
+                      epochs={epochs}
+                      currentEpochIndex={urlState.epoch}
+                      onEpochChange={(epoch) => setUrlState({ epoch })}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </main>
 
       {/* Guided Tour Walkthrough Dialog */}

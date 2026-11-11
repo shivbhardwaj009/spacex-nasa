@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Button, TestDataBadge, Tooltip } from "@/components/ui";
+import { TestDataBadge, Tooltip } from "@/components/ui";
 
 export interface AppHeaderProps {
   isSynthetic?: boolean;
@@ -28,44 +28,65 @@ export function AppHeader({
   onOpenShare,
 }: AppHeaderProps) {
   return (
-    <header className="h-16 md:h-18 px-4 md:px-6 border-b border-white/10 glass-panel-subtle flex items-center justify-between gap-3 shrink-0 z-30">
-      {/* Brand & Logo */}
+    <header className="h-16 px-4 md:px-6 border-b border-white/10 bg-black/75 backdrop-blur-md flex items-center justify-between gap-4 shrink-0 z-30 select-none">
+      {/* 1. NASA Meatball & SPHEREx Brand */}
       <div className="flex items-center gap-3 shrink-0">
         <Link
           href="/"
-          className="flex items-center gap-2.5 focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg"
+          className="flex items-center gap-2.5 focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg group"
           aria-label="SPHEREx Sky Diary Home"
         >
-          {/* Cosmic SPHEREx Hexagonal Aperture Logo */}
-          <div className="h-9 w-9 md:h-10 md:w-10 rounded-xl bg-gradient-to-tr from-cyan-600 via-sky-500 to-amber-400 flex items-center justify-center p-0.5 shadow-lg shadow-cyan-500/20">
-            <div className="h-full w-full bg-space-950 rounded-[10px] flex items-center justify-center">
-              <svg
-                className="h-5 w-5 text-cyan-300"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.4" />
-                <path d="M12 3a9 9 0 0 1 9 9" stroke="#22d3ee" strokeWidth="2.5" />
-                <circle cx="16.5" cy="7.5" r="2" fill="#fbbf24" stroke="none" />
-                <path d="M8 12h8M12 8v8" stroke="currentColor" strokeLinecap="round" />
-              </svg>
-            </div>
+          {/* Authentic NASA Meatball Insignia Vector */}
+          <div className="h-9 w-9 rounded-full bg-[#0b3d91] relative overflow-hidden flex items-center justify-center shadow-lg shadow-blue-950/60 border border-blue-400/30 group-hover:scale-105 transition-transform shrink-0">
+            {/* Red Vector Chevron */}
+            <svg
+              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 100 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* White Starfield */}
+              <circle cx="25" cy="30" r="1.5" fill="white" opacity="0.9" />
+              <circle cx="75" cy="28" r="1.2" fill="white" opacity="0.8" />
+              <circle cx="35" cy="72" r="1.5" fill="white" opacity="0.7" />
+              <circle cx="68" cy="68" r="1" fill="white" opacity="0.9" />
+              <circle cx="50" cy="20" r="1.3" fill="white" opacity="0.8" />
+              <circle cx="82" cy="50" r="1.2" fill="white" opacity="0.8" />
+              {/* Orbit Ellipse */}
+              <ellipse
+                cx="50"
+                cy="50"
+                rx="42"
+                ry="18"
+                stroke="white"
+                strokeWidth="2.5"
+                strokeOpacity="0.8"
+                transform="rotate(-25 50 50)"
+              />
+              {/* Aeronautics Red Chevron */}
+              <path
+                d="M18 68 L50 22 L65 52 L54 52 L48 38 L30 68 Z"
+                fill="#fc3d21"
+              />
+            </svg>
+            {/* NASA Text */}
+            <span className="relative z-10 text-[9px] font-black tracking-tighter text-white font-sans drop-shadow-md">
+              NASA
+            </span>
           </div>
 
-          <div>
+          <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-base md:text-lg tracking-tight text-white font-sans">
+              <span className="font-bold text-sm md:text-base tracking-widest text-white uppercase font-sans">
                 SPHEREx Sky Diary
               </span>
-              <span className="hidden lg:inline-block text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-space-850 text-space-300 border border-white/10">
-                NASA Space Apps 2026
+              <span className="hidden xl:inline-block text-[9px] font-mono tracking-widest uppercase px-1.5 py-0.5 rounded bg-white/10 text-space-300 border border-white/10">
+                Planet X &amp; Movers
               </span>
             </div>
-            <p className="text-[11px] text-space-400 font-mono hidden sm:block">
-              Planet X &amp; Asteroid Moving Object Explorer
-            </p>
+            <span className="text-[10px] text-space-400 font-mono tracking-wider hidden sm:block">
+              EYES ON SPHEREx SURVEY ARCHIVE
+            </span>
           </div>
         </Link>
 
@@ -77,10 +98,10 @@ export function AppHeader({
         )}
       </div>
 
-      {/* Search Input Box */}
+      {/* 2. Center Search Input Box */}
       <form
         onSubmit={onSearchSubmit}
-        className="flex-1 max-w-md mx-2 hidden sm:flex items-center"
+        className="flex-1 max-w-md mx-2 hidden md:flex items-center"
         role="search"
       >
         <div className="relative w-full">
@@ -107,8 +128,8 @@ export function AppHeader({
             type="search"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder={`Search ${candidateCount} movers by RA, Dec or designation...`}
-            className="w-full min-h-[44px] pl-9 pr-10 py-2 text-xs md:text-sm font-mono rounded-xl bg-space-950/80 border border-white/10 text-space-100 placeholder-space-400 transition-all focus:border-cyan-400 focus:bg-space-900 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+            placeholder={`Search ${candidateCount} movers by ID, designation or RA/Dec...`}
+            className="w-full min-h-[38px] pl-9 pr-10 py-1.5 text-xs font-mono rounded-full bg-white/5 border border-white/10 text-white placeholder-space-400 transition-all focus:border-cyan-400 focus:bg-black/80 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
           />
           {searchQuery && (
             <button
@@ -129,7 +150,7 @@ export function AppHeader({
         </div>
       </form>
 
-      {/* Right Controls: Mode Toggle, Tour, Share, Design System Link */}
+      {/* 3. Right NASA Eyes Toolbar Controls */}
       <div className="flex items-center gap-2 md:gap-3 shrink-0">
         {/* Beginner vs Scientific Mode Toggle */}
         <Tooltip
@@ -145,7 +166,7 @@ export function AppHeader({
             onClick={onToggleBeginnerMode}
             role="switch"
             aria-checked={beginnerMode}
-            className="min-h-[44px] px-3 py-1.5 rounded-xl border border-white/10 bg-space-850 hover:bg-space-800 transition-colors flex items-center gap-2 text-xs font-mono focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+            className="min-h-[36px] px-3 py-1 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors flex items-center gap-2 text-xs font-mono focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
           >
             <span
               className={`h-2 w-2 rounded-full transition-colors ${
@@ -161,37 +182,40 @@ export function AppHeader({
 
         {/* Guided Tour Trigger Button */}
         {onOpenTour && (
-          <Button
-            variant="outline"
-            size="sm"
+          <button
+            type="button"
             onClick={onOpenTour}
-            className="min-h-[44px] px-3 text-xs gap-1 border-white/10 text-cyan-300 hover:border-cyan-400"
+            className="min-h-[36px] px-3 rounded-full text-xs font-sans tracking-wide text-space-200 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/10 transition-all flex items-center gap-1.5"
             aria-label="Start guided walkthrough tour"
           >
-            <span>🧭</span>
+            <span className="text-amber-400">★</span>
             <span className="hidden md:inline">Tour</span>
-          </Button>
+          </button>
         )}
 
-        {/* Share Button */}
+        {/* Share Button (NASA Eyes style) */}
         {onOpenShare && (
-          <Button
-            variant="outline"
-            size="sm"
+          <button
+            type="button"
             onClick={onOpenShare}
-            className="min-h-[44px] px-3 text-xs gap-1 border-white/10 text-amber-300 hover:border-amber-400"
+            className="min-h-[36px] px-3.5 rounded-full text-xs font-sans tracking-wide text-white bg-white/10 hover:bg-white/20 border border-white/10 transition-all flex items-center gap-1.5"
             aria-label="Share current sky view"
           >
-            <span>🔗</span>
-            <span className="hidden md:inline">Share</span>
-          </Button>
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" />
+            </svg>
+            <span>Share</span>
+          </button>
         )}
 
         {/* Link to Design System Catalog */}
         <Link href="/design" tabIndex={-1}>
-          <Button variant="ghost" size="sm" className="hidden lg:inline-flex text-xs font-mono">
+          <button
+            type="button"
+            className="min-h-[36px] px-3 rounded-full text-xs font-mono text-space-400 hover:text-space-200 transition-colors hidden xl:inline-flex items-center"
+          >
             /design
-          </Button>
+          </button>
         </Link>
       </div>
     </header>
