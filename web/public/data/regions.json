@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "default_region": "deep-field-north",
+  "regions": [
+    {
+      "slug": "deep-field-north",
+      "name": "SPHEREx Deep Field North (Mock)",
+      "ra_center": 269.452,
+      "dec_center": 66.561,
+      "radius_deg": 0.5,
+      "fov_deg": 1.0,
+      "data_url": "/data/candidates.json",
+      "has_data": true,
+      "is_synthetic": true,
+      "description": "Standard simulated survey verification field covering dwarf planet 1 Ceres and injected mover candidates."
+    },
+    {
+      "slug": "barnards-star",
+      "name": "Barnard's Star Field",
+      "ra_center": 269.45208,
+      "dec_center": 4.69339,
+      "radius_deg": 0.2,
+      "fov_deg": 0.2,
+      "data_url": "/data/regions/barnards-star/candidates.json",
+      "has_data": false,
+      "is_synthetic": false,
+      "description": "Fastest known proper-motion star in Ophiuchus (10.3\"/yr). No precomputed SPHEREx data available for this target yet."
+    },
+    {
+      "slug": "wise-0855",
+      "name": "WISE 0855-0714 Field",
+      "ra_center": 133.79513,
+      "dec_center": -7.24515,
+      "radius_deg": 0.2,
+      "fov_deg": 0.2,
+      "data_url": "/data/regions/wise-0855/candidates.json",
+      "has_data": false,
+      "is_synthetic": false,
+      "description": "Cold Y-dwarf candidate at 7.2 light-years with putative water-ice clouds. No precomputed SPHEREx data available for this target yet."
+    },
+    {
+      "slug": "epsilon-indi-b",
+      "name": "Epsilon Indi B Field",
+      "ra_center": 330.84025,
+      "dec_center": -56.78608,
+      "radius_deg": 0.2,
+      "fov_deg": 0.2,
+      "data_url": "/data/regions/epsilon-indi-b/candidates.json",
+      "has_data": false,
+      "is_synthetic": false,
+      "description": "Cold binary brown dwarf system (T1 + T6). No precomputed SPHEREx data available for this target yet."
+    },
+    {
+      "slug": "rw-aurigae",
+      "name": "RW Aurigae Field",
+      "ra_center": 77.10850,
+      "dec_center": 30.40142,
+      "radius_deg": 0.2,
+      "fov_deg": 0.2,
+      "data_url": "/data/regions/rw-aurigae/candidates.json",
+      "has_data": false,
+      "is_synthetic": false,
+      "description": "T Tauri young binary star with circumstellar dust accretion disk. No precomputed SPHEREx data available for this target yet."
+    },
+    {
+      "slug": "r-draconis",
+      "name": "R Draconis Field",
+      "ra_center": 247.55446,
+      "dec_center": 66.70278,
+      "radius_deg": 0.2,
+      "fov_deg": 0.2,
+      "data_url": "/data/regions/r-draconis/candidates.json",
+      "has_data": false,
+      "is_synthetic": false,
+      "description": "High-amplitude Mira pulsating variable star. No precomputed SPHEREx data available for this target yet."
+    }
+  ]
+}
+

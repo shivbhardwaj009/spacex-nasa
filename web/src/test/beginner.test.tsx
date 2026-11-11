@@ -77,3 +77,4 @@ describe("Beginner Mode & Science Glossary", () => {
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
 });
+

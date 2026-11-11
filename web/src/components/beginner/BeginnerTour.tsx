@@ -185,3 +185,4 @@ export const BeginnerTour: React.FC<BeginnerTourProps> = ({ isOpen, onClose }) =
     </div>
   );
 };
+

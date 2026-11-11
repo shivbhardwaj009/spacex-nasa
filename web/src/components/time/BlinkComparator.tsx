@@ -79,7 +79,7 @@ export function BlinkComparator({
           <h3 className="text-sm font-bold text-white font-mono flex items-center gap-2">
             <span>⚡ Blink Comparator</span>
             <span className="text-[10px] text-cyan-300 font-normal">
-              (Discover Movers via Rapid Alternate Switching)
+              (Spot Movers via Rapid Alternate Switching)
             </span>
           </h3>
         </div>

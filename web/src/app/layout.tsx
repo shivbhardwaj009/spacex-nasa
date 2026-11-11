@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "SPHEREx Sky Diary - NASA Space Apps Challenge 2026",
   description:
-    "Explore multi-epoch SPHEREx sky time-lapses, automated asteroid and comet detection, Planet X candidate discovery, and 102-channel spectrophotometry.",
+    "Explore multi-epoch SPHEREx sky time-lapses, automated asteroid and comet detection, candidate follow-up, and 102-channel spectrophotometry.",
   keywords: [
     "SPHEREx",
     "NASA Space Apps Challenge 2026",

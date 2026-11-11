@@ -1,0 +1,96 @@
+{
+  "title": "SPHEREx Sky Diary - 3-Minute Challenge Pitch Walkthrough",
+  "version": "1.0",
+  "total_duration_s": 180,
+  "is_synthetic": true,
+  "steps": [
+    {
+      "step": 1,
+      "time_s": 0,
+      "duration_s": 25,
+      "title": "1. Target Region & Field of View",
+      "caption": "Welcome to SPHEREx Sky Diary! We begin centered on SPHEREx Deep Field North (RA 269.452°, Dec +66.561°), an ultra-deep observational window surveyed every 6 months.",
+      "state": {
+        "ra": 269.452,
+        "dec": 66.561,
+        "fov": 0.2,
+        "mode": "viewer",
+        "epoch": 0,
+        "object": null,
+        "trails": true
+      }
+    },
+    {
+      "step": 2,
+      "time_s": 25,
+      "duration_s": 25,
+      "title": "2. Multi-Epoch Time-Lapse & Blink Comparator",
+      "caption": "Toggling the Blink Comparator rapidly alternates between observation epochs. Stationary stars remain locked in place, while solar system objects clearly jump back and forth.",
+      "state": {
+        "mode": "blink",
+        "epoch": 1,
+        "object": null
+      }
+    },
+    {
+      "step": 3,
+      "time_s": 50,
+      "duration_s": 30,
+      "title": "3. Mover Detection & Trajectory Trails",
+      "caption": "Our offline pipeline automatically links transient centroids across epochs into constant-velocity tracklets, plotting motion trails that indicate speed and direction.",
+      "state": {
+        "mode": "viewer",
+        "epoch": 0,
+        "trails": true,
+        "object": null
+      }
+    },
+    {
+      "step": 4,
+      "time_s": 80,
+      "duration_s": 30,
+      "title": "4. Known Object: 1 Ceres",
+      "caption": "Selecting candidate SPX-MOV-0001 reveals a 91% confidence match to dwarf planet 1 Ceres, validated against the official IMCCE SkyBoT astronomical ephemeris database.",
+      "state": {
+        "mode": "viewer",
+        "object": "SPX-MOV-0001",
+        "ra": 269.452,
+        "dec": 66.561
+      }
+    },
+    {
+      "step": 5,
+      "time_s": 110,
+      "duration_s": 30,
+      "title": "5. Unknown Candidate & Honest Science",
+      "caption": "Selecting SPX-MOV-0002 highlights an unmatched mover! Sky Diary displays an honest science notice: 'Not matched to asteroid catalogs; candidate for follow-up, not a confirmed discovery'.",
+      "state": {
+        "mode": "viewer",
+        "object": "SPX-MOV-0002",
+        "ra": 269.452,
+        "dec": 66.561
+      }
+    },
+    {
+      "step": 6,
+      "time_s": 140,
+      "duration_s": 25,
+      "title": "6. 102-Channel Spectrophotometry (SED)",
+      "caption": "SPHEREx captures 102 spectral channels from 0.75 to 5.0 µm. The SED graph displays surface diagnostic features and provides one-click CSV export for astronomical research.",
+      "state": {
+        "object": "SPX-MOV-0002"
+      }
+    },
+    {
+      "step": 7,
+      "time_s": 165,
+      "duration_s": 15,
+      "title": "7. Share Findings & Embed Everywhere",
+      "caption": "Click Share to generate a high-res 1200x630 social card (with TEST DATA transparency), copy a direct link with all viewport parameters, or grab an iframe embed snippet.",
+      "state": {
+        "object": "SPX-MOV-0001"
+      }
+    }
+  ]
+}
+

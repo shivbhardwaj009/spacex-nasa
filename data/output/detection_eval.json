@@ -1,70 +1,71 @@
 {
   "evaluation": {
     "total_ground_truth_movers": 3,
-    "total_detected_movers": 1,
-    "true_positives": 1,
+    "total_detected_movers": 2,
+    "true_positives": 2,
     "false_positives": 0,
-    "recall": 0.3333,
+    "recall": 0.6667,
     "false_positive_rate": 0.0,
     "position_error_arcsec": {
-      "mean": 0.915,
-      "median": 1.028,
-      "std": 0.252
+      "mean": 1.286,
+      "median": 1.224,
+      "std": 0.519
     },
     "velocity_error_arcsec_day": {
-      "ra_rate_mean_err": 0.022,
-      "dec_rate_mean_err": 0.049
+      "ra_rate_mean_err": 0.173,
+      "dec_rate_mean_err": 0.136
     },
     "matched_gt_movers": [
-      "MOCK-MOVER-01"
+      "MOCK-MOVER-01",
+      "MOCK-MOVER-03"
     ]
   },
   "snr_sweep": [
     {
       "snr_threshold": 2.5,
-      "detected": 1,
-      "true_positives": 1,
-      "recall_pct": 33.3,
+      "detected": 2,
+      "true_positives": 2,
+      "recall_pct": 66.7,
       "false_positives": 0,
       "fp_rate_pct": 0.0
     },
     {
       "snr_threshold": 3.0,
-      "detected": 1,
-      "true_positives": 1,
-      "recall_pct": 33.3,
+      "detected": 2,
+      "true_positives": 2,
+      "recall_pct": 66.7,
       "false_positives": 0,
       "fp_rate_pct": 0.0
     },
     {
       "snr_threshold": 3.5,
-      "detected": 1,
-      "true_positives": 1,
-      "recall_pct": 33.3,
+      "detected": 2,
+      "true_positives": 2,
+      "recall_pct": 66.7,
       "false_positives": 0,
       "fp_rate_pct": 0.0
     },
     {
       "snr_threshold": 4.0,
-      "detected": 1,
-      "true_positives": 1,
-      "recall_pct": 33.3,
+      "detected": 2,
+      "true_positives": 2,
+      "recall_pct": 66.7,
       "false_positives": 0,
       "fp_rate_pct": 0.0
     },
     {
       "snr_threshold": 5.0,
-      "detected": 1,
-      "true_positives": 1,
-      "recall_pct": 33.3,
+      "detected": 2,
+      "true_positives": 2,
+      "recall_pct": 66.7,
       "false_positives": 0,
       "fp_rate_pct": 0.0
     },
     {
       "snr_threshold": 6.0,
-      "detected": 1,
-      "true_positives": 1,
-      "recall_pct": 33.3,
+      "detected": 2,
+      "true_positives": 2,
+      "recall_pct": 66.7,
       "false_positives": 0,
       "fp_rate_pct": 0.0
     }

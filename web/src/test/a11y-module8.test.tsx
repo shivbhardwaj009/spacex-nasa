@@ -113,3 +113,4 @@ describe("Axe Accessibility Audits (Module 8 Components)", () => {
     expect(seriousOrCritical).toEqual([]);
   });
 });
+

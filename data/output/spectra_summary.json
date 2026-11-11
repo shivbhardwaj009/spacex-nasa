@@ -1,15 +1,22 @@
 {
   "is_synthetic": true,
-  "total_spectra_extracted": 1,
-  "fov_deg": 0.2,
+  "total_spectra_extracted": 2,
+  "fov_deg": 1.0,
   "sum_six_bands": false,
   "spectra": [
     {
       "object_id": "SPX-MOV-0001",
       "channels": 102,
-      "mean_flux": 43.181,
+      "mean_flux": 109.792,
       "taxonomy_class": "X-type / Unclassified",
-      "file": "data\\output\\spectra\\SPX-MOV-0001.json"
+      "file": "C:\\Users\\pawan\\Desktop\\projects\\nasa sphere x\\data\\output\\spectra\\SPX-MOV-0001.json"
+    },
+    {
+      "object_id": "SPX-MOV-0002",
+      "channels": 102,
+      "mean_flux": 23.86,
+      "taxonomy_class": "X-type / Unclassified",
+      "file": "C:\\Users\\pawan\\Desktop\\projects\\nasa sphere x\\data\\output\\spectra\\SPX-MOV-0002.json"
     }
   ]
 }

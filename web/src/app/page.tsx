@@ -6,8 +6,8 @@ import { AppHeader } from "@/components/layout/AppHeader";
 import { SidePanel } from "@/components/layout/SidePanel";
 import { SearchBox, FovControl } from "@/components/viewer";
 import { TimeBar, BlinkComparator } from "@/components/time";
-import { Button, Card, TestDataBadge } from "@/components/ui";
-import { BeginnerTour } from "@/components/beginner";
+import { Button, Card, TestDataBadge, ErrorBoundary } from "@/components/ui";
+import { BeginnerTour, DemoTourBar } from "@/components/beginner";
 import { ShareModal } from "@/components/share";
 import { useCandidateCatalog } from "@/lib/client";
 import { useUrlState } from "@/lib/useUrlState";
@@ -26,14 +26,15 @@ const DynamicSkyViewer = dynamic(
 );
 
 export default function SkyDiaryApp() {
-  const { data: catalog, loading, error, isSynthetic, reload } = useCandidateCatalog(
-    "/data/candidates.json"
-  );
-
   const [urlState, setUrlState] = useUrlState();
   const [beginnerMode, setBeginnerMode] = useState<boolean>(true);
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
+  const [isDemoTourOpen, setIsDemoTourOpen] = useState<boolean>(false);
   const [isGlobalShareOpen, setIsGlobalShareOpen] = useState<boolean>(false);
+
+  // Load curated offline demo data in demo mode, or master dataset
+  const dataUrl = urlState.demo ? "/demo/candidates.json" : "/data/candidates.json";
+  const { data: catalog, loading, error, isSynthetic, reload } = useCandidateCatalog(dataUrl);
 
   const epochs = catalog?.epochs || [];
   const movers = catalog?.movers || [];
@@ -106,7 +107,7 @@ export default function SkyDiaryApp() {
               Data Pipeline Error
             </h2>
             <p className="text-xs text-rose-300 font-mono">
-              {error || "Could not load candidates.json from /public/data"}
+              {error || "Could not load candidate data catalog"}
             </p>
           </div>
 
@@ -136,19 +137,21 @@ export default function SkyDiaryApp() {
           </div>
         )}
 
-        <DynamicSkyViewer
-          ra={urlState.ra}
-          dec={urlState.dec}
-          fov={urlState.fov}
-          onMove={(ra, dec, fov) => setUrlState({ ra, dec, fov })}
-          movers={movers}
-          selectedObjectId={urlState.object}
-          epochIndex={urlState.epoch}
-          epochs={epochs}
-          onSelect={handleSelectObjectId}
-          showTrails={urlState.trails}
-          isDemo={urlState.demo}
-        />
+        <ErrorBoundary fallbackTitle="Embedded Viewer Error">
+          <DynamicSkyViewer
+            ra={urlState.ra}
+            dec={urlState.dec}
+            fov={urlState.fov}
+            onMove={(ra, dec, fov) => setUrlState({ ra, dec, fov })}
+            movers={movers}
+            selectedObjectId={urlState.object}
+            epochIndex={urlState.epoch}
+            epochs={epochs}
+            onSelect={handleSelectObjectId}
+            showTrails={urlState.trails}
+            isDemo={urlState.demo}
+          />
+        </ErrorBoundary>
 
         {/* Embedded Time-lapse footer */}
         <div className="absolute bottom-3 inset-x-3 z-30">
@@ -179,6 +182,26 @@ export default function SkyDiaryApp() {
         onOpenTour={() => setIsTourOpen(true)}
         onOpenShare={() => setIsGlobalShareOpen(true)}
       />
+
+      {/* Demo Mode Honesty Banner */}
+      {urlState.demo && (
+        <div className="w-full bg-amber-950/90 border-b border-amber-500/50 py-1.5 px-4 text-center text-xs font-mono text-amber-200 flex items-center justify-between gap-2 z-40 shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-amber-400 font-bold shrink-0">⚠</span>
+            <span className="truncate">
+              DEMO MODE ACTIVE: Using offline synthetic benchmark data (SPHEREx Deep Field North). TEST DATA badge active on all views.
+            </span>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsDemoTourOpen(true)}
+            className="text-xs py-0.5 px-2.5 min-h-[28px] border-amber-500/50 text-amber-300 hover:border-amber-400 shrink-0"
+          >
+            ▶ 3-Min Pitch Tour
+          </Button>
+        </div>
+      )}
 
       {/* Secondary Controls Bar: Coordinate Search, Mode, Demo Switch, Trails */}
       <div className="px-4 py-2 border-b border-white/10 glass-panel-subtle flex flex-wrap items-center justify-between gap-3 shrink-0 z-20">
@@ -259,19 +282,21 @@ export default function SkyDiaryApp() {
 
           {/* Interactive Sky Viewer or Blink Comparator */}
           <div className="flex-1 relative w-full h-full overflow-hidden">
-            <DynamicSkyViewer
-              ra={urlState.ra}
-              dec={urlState.dec}
-              fov={urlState.fov}
-              onMove={(ra, dec, fov) => setUrlState({ ra, dec, fov })}
-              movers={movers}
-              selectedObjectId={urlState.object}
-              epochIndex={urlState.epoch}
-              epochs={epochs}
-              onSelect={handleSelectObjectId}
-              showTrails={urlState.trails}
-              isDemo={urlState.demo}
-            />
+            <ErrorBoundary fallbackTitle="Sky Viewer Error">
+              <DynamicSkyViewer
+                ra={urlState.ra}
+                dec={urlState.dec}
+                fov={urlState.fov}
+                onMove={(ra, dec, fov) => setUrlState({ ra, dec, fov })}
+                movers={movers}
+                selectedObjectId={urlState.object}
+                epochIndex={urlState.epoch}
+                epochs={epochs}
+                onSelect={handleSelectObjectId}
+                showTrails={urlState.trails}
+                isDemo={urlState.demo}
+              />
+            </ErrorBoundary>
 
             {/* Field of View Floating Preset Overlay */}
             <div className="absolute top-3 left-3 z-30 max-w-xs">
@@ -301,36 +326,45 @@ export default function SkyDiaryApp() {
         </div>
 
         {/* Right Side Panel: Movers List & Inspector */}
-        <SidePanel
-          movers={movers}
-          selectedMover={selectedMover}
-          onSelectMover={(mover) => {
-            if (mover) {
-              setUrlState({
-                object: mover.object_id,
-                ra: mover.ra,
-                dec: mover.dec,
-              });
-            } else {
-              setUrlState({ object: null });
-            }
-          }}
-          beginnerMode={beginnerMode}
-          selectedEpochId={epochs[urlState.epoch]?.epoch_id}
-          onSelectEpoch={(epochId) => {
-            const idx = epochs.findIndex((e) => e.epoch_id === epochId);
-            if (idx !== -1) {
-              setUrlState({ epoch: idx });
-            }
-          }}
-          regionName={catalog?.region?.name}
-        />
+        <ErrorBoundary fallbackTitle="Movers Panel Error">
+          <SidePanel
+            movers={movers}
+            selectedMover={selectedMover}
+            onSelectMover={(mover) => {
+              if (mover) {
+                setUrlState({
+                  object: mover.object_id,
+                  ra: mover.ra,
+                  dec: mover.dec,
+                });
+              } else {
+                setUrlState({ object: null });
+              }
+            }}
+            beginnerMode={beginnerMode}
+            selectedEpochId={epochs[urlState.epoch]?.epoch_id}
+            onSelectEpoch={(epochId) => {
+              const idx = epochs.findIndex((e) => e.epoch_id === epochId);
+              if (idx !== -1) {
+                setUrlState({ epoch: idx });
+              }
+            }}
+            regionName={catalog?.region?.name}
+          />
+        </ErrorBoundary>
       </main>
 
       {/* Guided Tour Walkthrough Dialog */}
       <BeginnerTour
         isOpen={isTourOpen}
         onClose={() => setIsTourOpen(false)}
+      />
+
+      {/* 3-Minute Demo Pitch Automated Tour Bar */}
+      <DemoTourBar
+        isOpen={isDemoTourOpen}
+        onClose={() => setIsDemoTourOpen(false)}
+        onApplyState={(newState) => setUrlState(newState)}
       />
 
       {/* Global Share Dialog */}

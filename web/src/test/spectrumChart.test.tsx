@@ -83,3 +83,4 @@ describe("SpectrumChart Component", () => {
     expect(createObjectURL).toHaveBeenCalledTimes(1);
   });
 });
+

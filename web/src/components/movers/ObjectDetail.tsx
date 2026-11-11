@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import type { MoverCandidate } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { ConfidenceBar } from "./ConfidenceBar";
 import { Filmstrip } from "./Filmstrip";
 import { SpectrumChart } from "./SpectrumChart";
@@ -212,7 +213,7 @@ export const ObjectDetail: React.FC<ObjectDetailProps> = ({
               <span className="text-amber-400 text-sm mt-0.5">ℹ</span>
               <p className="leading-relaxed">
                 <span className="font-semibold text-amber-300">Honest Science Label: </span>
-                Not matched to asteroid or comet catalogs queried (IMCCE SkyBoT / JPL Horizons).
+                No catalog match, candidate for follow-up. Not matched to asteroid or comet catalogs queried (IMCCE SkyBoT / JPL Horizons).
                 This does <em>not</em> guarantee a new discovery; it could be an uncatalogued asteroid, an imaging artifact, or a variable star residual.
               </p>
             </div>
@@ -323,15 +324,19 @@ export const ObjectDetail: React.FC<ObjectDetailProps> = ({
         {/* Scrollable Tab Panels Body */}
         <div className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900">
           {activeTab === "cutouts" && (
-            <Filmstrip
-              mover={mover}
-              selectedEpochId={selectedEpochId}
-              onSelectEpoch={onSelectEpoch}
-            />
+            <ErrorBoundary fallbackTitle="Filmstrip Error">
+              <Filmstrip
+                mover={mover}
+                selectedEpochId={selectedEpochId}
+                onSelectEpoch={onSelectEpoch}
+              />
+            </ErrorBoundary>
           )}
 
           {activeTab === "spectrum" && (
-            <SpectrumChart mover={mover} />
+            <ErrorBoundary fallbackTitle="Spectrophotometry Chart Error">
+              <SpectrumChart mover={mover} />
+            </ErrorBoundary>
           )}
 
           {activeTab === "json" && (

@@ -149,7 +149,7 @@ export async function generateShareCardBlob(options: ShareCardOptions): Promise<
   ctx.font = "14px sans-serif";
   const disclaimer = mover.type === "known"
     ? "Spectrophotometric detection verified against SkyBoT / JPL Horizons orbital databases."
-    : "Unmatched mover candidate. Not confirmed as a new discovery. Subject to orbital confirmation.";
+    : "No catalog match, candidate for follow-up. Not confirmed as a new discovery. Subject to orbital confirmation.";
   ctx.fillText(disclaimer, 70, 580);
 
   // Return as Blob

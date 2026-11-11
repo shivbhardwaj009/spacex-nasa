@@ -20,6 +20,7 @@ export function SearchBox({
   const [loading, setLoading] = useState(false);
   const [announcement, setAnnouncement] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [infoMsg, setInfoMsg] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +28,7 @@ export function SearchBox({
     if (!q) return;
 
     setErrorMsg(null);
+    setInfoMsg(null);
     setLoading(true);
 
     try {
@@ -61,6 +63,14 @@ export function SearchBox({
     setErrorMsg(null);
     const msg = `Selected challenge target: ${target.name} (RA ${target.ra.toFixed(4)}°, Dec ${target.dec.toFixed(4)}°)`;
     setAnnouncement(msg);
+
+    // Target data availability check
+    if (target.name !== "SPHEREx Deep Field North") {
+      setInfoMsg(`No precomputed SPHEREx data for ${target.name} yet. Showing sky background view.`);
+    } else {
+      setInfoMsg(null);
+    }
+
     onCoordinateSelect({
       ra: target.ra,
       dec: target.dec,
@@ -156,6 +166,17 @@ export function SearchBox({
       <div aria-live="polite" className="sr-only">
         {announcement}
       </div>
+
+      {/* Target Data Availability Notice */}
+      {infoMsg && (
+        <div
+          role="status"
+          className="p-2 rounded-lg bg-sky-950/70 border border-sky-500/40 text-xs text-sky-200 font-mono flex items-start gap-2 animate-in fade-in"
+        >
+          <span className="text-cyan-400 font-bold shrink-0">ℹ</span>
+          <span>{infoMsg}</span>
+        </div>
+      )}
 
       {/* Error Message Alert */}
       {errorMsg && (

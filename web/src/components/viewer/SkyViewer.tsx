@@ -43,7 +43,11 @@ export function SkyViewer({
 
   const [aladinError, setAladinError] = useState<string | null>(null);
   const [dimensions, setDimensions] = useState({ width: 600, height: 500 });
-  const [useCanvasFallback, setUseCanvasFallback] = useState(isDemo);
+  const [useCanvasFallback, setUseCanvasFallback] = useState<boolean>(() => {
+    if (isDemo) return true;
+    if (typeof navigator !== "undefined" && !navigator.onLine) return true;
+    return false;
+  });
 
   const aladinInstanceRef = useRef<any>(null);
   const isUpdatingFromProps = useRef(false);
@@ -84,8 +88,74 @@ export function SkyViewer({
     let isCancelled = false;
     let aladinInstance: any = null;
 
+    // Shield against unhandled promise rejections from Aladin Lite network requests (e.g. CDS unreachable)
+    const handleRejection = (event: PromiseRejectionEvent) => {
+      const reason = event.reason;
+      const reasonStr = String(reason?.message || reason || "");
+      const stackStr = String(reason?.stack || "");
+      const isFetchOrAladin =
+        reasonStr.includes("fetch") ||
+        reasonStr.includes("NetworkError") ||
+        reasonStr.includes("Failed to fetch") ||
+        reasonStr.includes("Load failed") ||
+        stackStr.includes("aladin") ||
+        stackStr.includes("SkyViewer");
+
+      if (isFetchOrAladin) {
+        // Prevent Next.js development overlay and browser uncaught error banner
+        event.preventDefault();
+        if (!isCancelled) {
+          console.warn("Aladin Lite network request failed; falling back to offline star-field canvas:", reason);
+          setAladinError("Sky survey network connection unavailable. Operating in offline sky view.");
+          setUseCanvasFallback(true);
+        }
+      }
+    };
+
+    const handleError = (event: ErrorEvent) => {
+      const msg = String(event.message || "");
+      if (msg.includes("Failed to fetch") || msg.includes("NetworkError") || msg.includes("aladin")) {
+        event.preventDefault();
+        if (!isCancelled) {
+          console.warn("Aladin error intercepted; falling back to offline canvas:", msg);
+          setAladinError("Sky survey network connection unavailable. Operating in offline sky view.");
+          setUseCanvasFallback(true);
+        }
+      }
+    };
+
+    window.addEventListener("unhandledrejection", handleRejection);
+    window.addEventListener("error", handleError);
+
     const initAladin = async () => {
       try {
+        // Fast probe: check if CDS survey server is reachable before initializing Aladin Lite
+        if (typeof navigator !== "undefined" && !navigator.onLine) {
+          if (!isCancelled) {
+            setAladinError("Offline: CDS sky survey unreachable. Operating in offline sky view.");
+            setUseCanvasFallback(true);
+          }
+          return;
+        }
+
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 2000);
+          await fetch("https://alasky.cds.unistra.fr/DSS/DSSColor/properties", {
+            method: "HEAD",
+            mode: "no-cors",
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+        } catch {
+          if (!isCancelled) {
+            console.warn("CDS survey server unreachable. Gracefully switching to offline star-field canvas.");
+            setAladinError("CDS survey server unreachable. Operating in offline sky view.");
+            setUseCanvasFallback(true);
+          }
+          return;
+        }
+
         const aladinModule = await import("aladin-lite");
         const A = (aladinModule as any).default || aladinModule;
 
@@ -153,6 +223,8 @@ export function SkyViewer({
     // Cleanup on unmount (React Strict Mode safe)
     return () => {
       isCancelled = true;
+      window.removeEventListener("unhandledrejection", handleRejection);
+      window.removeEventListener("error", handleError);
       if (aladinInstanceRef.current) {
         try {
           if (typeof aladinInstanceRef.current.destroy === "function") {

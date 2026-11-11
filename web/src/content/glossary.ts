@@ -53,9 +53,9 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
   unknown: {
     id: "unknown",
     term: "Unknown Mover",
-    short: "A moving candidate that did not match any known cataloged asteroid or comet.",
+    short: "No catalog match, candidate for follow-up. A mover that did not match queried asteroid/comet databases.",
     detail:
-      "IMPORTANT: 'Unknown' means 'not found in queried asteroid catalogs' — it is NOT a confirmed new discovery. It could be a faint uncatalogued asteroid, a variable star residual, a high-proper-motion star, or an imaging artifact. Astronomical follow-up is required to confirm.",
+      "IMPORTANT: 'Unknown' means 'no catalog match in queried asteroid catalogs' — it is NOT a confirmed new discovery. It could be a faint uncatalogued asteroid, a variable star residual, a high-proper-motion star, or an imaging artifact. Astronomical follow-up is required to confirm.",
   },
   spectrum: {
     id: "spectrum",
@@ -86,3 +86,4 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
       "To ensure algorithms work before SPHEREx flight data is calibrated, synthetic stars, background noise, and injected movers with known orbital trajectories are generated. Simulated detections must never be cited as real celestial discoveries.",
   },
 };
+
