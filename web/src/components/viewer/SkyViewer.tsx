@@ -49,6 +49,29 @@ export function SkyViewer({
     return false;
   });
 
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartRef = useRef<{ x: number; y: number; ra: number; dec: number } | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Deterministic realistic star field for canvas/offline/demo mode
+  const starsRef = useRef<Array<{ ra: number; dec: number; mag: number; color: string }>>([]);
+  if (starsRef.current.length === 0) {
+    let seed = 42;
+    const rand = () => {
+      seed = (seed * 16807) % 2147483647;
+      return (seed - 1) / 2147483646;
+    };
+    const colors = ["#ffffff", "#e0f2fe", "#fef3c7", "#fed7aa", "#bae6fd"];
+    for (let i = 0; i < 280; i++) {
+      starsRef.current.push({
+        ra: 269.452 + (rand() - 0.5) * 4.5,
+        dec: 66.561 + (rand() - 0.5) * 4.5,
+        mag: 1.0 + rand() * 4.0,
+        color: colors[Math.floor(rand() * colors.length)],
+      });
+    }
+  }
+
   const aladinInstanceRef = useRef<any>(null);
   const isUpdatingFromProps = useRef(false);
   const onMoveRef = useRef(onMove);
@@ -78,6 +101,99 @@ export function SkyViewer({
       setUseCanvasFallback(true);
     }
   }, [isDemo]);
+
+  // Smooth mouse wheel zoom in and zoom out listener
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+
+      // Zoom factor: 0.88 for zoom in, 1.14 for zoom out
+      const factor = e.deltaY < 0 ? 0.88 : 1.14;
+      const newFov = Math.max(0.01, Math.min(10.0, +(fov * factor).toFixed(4)));
+
+      if (newFov !== fov) {
+        onMoveRef.current?.(ra, dec, newFov);
+        if (aladinInstanceRef.current && typeof aladinInstanceRef.current.setFov === "function") {
+          aladinInstanceRef.current.setFov(newFov);
+        }
+      }
+    };
+
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, [fov, ra, dec]);
+
+  // Render dynamic starfield canvas when in offline/demo/canvas mode
+  useEffect(() => {
+    if (!useCanvasFallback || !canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+
+    // Subtle cosmic radial gradient
+    const grad = ctx.createRadialGradient(
+      dimensions.width / 2,
+      dimensions.height / 2,
+      0,
+      dimensions.width / 2,
+      dimensions.height / 2,
+      Math.max(dimensions.width, dimensions.height) / 2
+    );
+    grad.addColorStop(0, "rgba(6, 182, 212, 0.08)");
+    grad.addColorStop(1, "rgba(2, 6, 23, 1)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, dimensions.width, dimensions.height);
+
+    // Dynamic celestial grid lines that scale and pan with FOV
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+    ctx.lineWidth = 1;
+    const gridSize = Math.max(30, Math.min(120, Math.round(50 / (fov / 0.2))));
+    for (let x = (dimensions.width / 2) % gridSize; x < dimensions.width; x += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, dimensions.height);
+      ctx.stroke();
+    }
+    for (let y = (dimensions.height / 2) % gridSize; y < dimensions.height; y += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(dimensions.width, y);
+      ctx.stroke();
+    }
+
+    // Draw stars
+    const cosDec = Math.cos((dec * Math.PI) / 180);
+    const halfFov = fov / 2.0;
+
+    starsRef.current.forEach((star) => {
+      const dRa = (star.ra - ra) * cosDec;
+      const dDec = star.dec - dec;
+
+      // Astronomy convention: East is Left (-X), North is Up (-Y)
+      const sx = dimensions.width / 2 - (dRa / halfFov) * (dimensions.width / 2);
+      const sy = dimensions.height / 2 - (dDec / halfFov) * (dimensions.height / 2);
+
+      if (sx >= -10 && sx <= dimensions.width + 10 && sy >= -10 && sy <= dimensions.height + 10) {
+        ctx.fillStyle = star.color;
+        const radius = Math.max(0.7, Math.min(3.5, star.mag * (0.2 / fov) * 0.75));
+        ctx.beginPath();
+        ctx.arc(sx, sy, radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (star.mag > 3.0) {
+          ctx.fillStyle = star.color + "22";
+          ctx.beginPath();
+          ctx.arc(sx, sy, radius * 2.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    });
+  }, [ra, dec, fov, dimensions, useCanvasFallback]);
 
   // Aladin Lite initialization & StrictMode cleanup
   useEffect(() => {
@@ -261,13 +377,94 @@ export function SkyViewer({
 
   const currentEpoch = epochs[epochIndex] || null;
 
+  // Pointer drag-to-pan hand relocation handlers
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0 && e.pointerType === "mouse") return;
+    if ((e.target as HTMLElement)?.closest("button, a, input, [role='button']")) return;
+
+    try {
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    } catch {
+      // ignore
+    }
+
+    dragStartRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      ra,
+      dec,
+    };
+    setIsDragging(true);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragStartRef.current) return;
+
+    const dx = e.clientX - dragStartRef.current.x;
+    const dy = e.clientY - dragStartRef.current.y;
+
+    if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+
+    const cosDec = Math.cos((dragStartRef.current.dec * Math.PI) / 180);
+    // East is Left (-X): dragging cursor right (+dx) brings Eastern sky into view -> RA increases
+    const raDelta = (dx / dimensions.width) * (fov / (cosDec || 1));
+    // North is Up (-Y): dragging cursor down (+dy) brings Northern sky into view -> Dec increases
+    const decDelta = (dy / dimensions.height) * fov;
+
+    let newRa = (dragStartRef.current.ra + raDelta) % 360;
+    if (newRa < 0) newRa += 360;
+    const newDec = Math.max(-89.9, Math.min(89.9, dragStartRef.current.dec + decDelta));
+
+    onMoveRef.current?.(newRa, newDec, fov);
+
+    if (aladinInstanceRef.current && typeof aladinInstanceRef.current.gotoRaDec === "function") {
+      aladinInstanceRef.current.gotoRaDec(newRa, newDec);
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartRef.current) {
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {
+        // ignore
+      }
+      dragStartRef.current = null;
+    }
+    setIsDragging(false);
+  };
+
+  const handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement)?.closest("button, a, input, [role='button']")) return;
+    const factor = e.shiftKey ? 1.5 : 0.65;
+    const newFov = Math.max(0.01, Math.min(10.0, +(fov * factor).toFixed(4)));
+    onMoveRef.current?.(ra, dec, newFov);
+    if (aladinInstanceRef.current && typeof aladinInstanceRef.current.setFov === "function") {
+      aladinInstanceRef.current.setFov(newFov);
+    }
+  };
+
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-full bg-space-950 overflow-hidden select-none ${className}`}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      onDoubleClick={handleDoubleClick}
+      className={`relative w-full h-full bg-space-950 overflow-hidden select-none touch-none ${
+        isDragging ? "cursor-grabbing" : "cursor-grab"
+      } ${className}`}
       role="region"
       aria-label="Celestial sky view and multi-epoch observation player"
     >
+      {/* Dynamic Hand & Pan Cursor Styling Injection for Aladin WebGL Canvas */}
+      <style>{`
+        #${aladinDivId}, #${aladinDivId} canvas {
+          cursor: ${isDragging ? "grabbing" : "grab"} !important;
+        }
+      `}</style>
+
       {/* 1. Aladin Lite WebGL Canvas Mount Container */}
       {!useCanvasFallback && (
         <div
@@ -279,17 +476,16 @@ export function SkyViewer({
 
       {/* 2. Offline Fallback Plain Star-Field Canvas (Used in Demo mode or when Aladin fails) */}
       {useCanvasFallback && (
-        <div
-          className="absolute inset-0 w-full h-full z-0 flex items-center justify-center bg-space-950"
-          style={{
-            backgroundImage: `radial-gradient(circle at 50% 50%, rgba(34,211,238,0.08) 0%, transparent 75%),
-              linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)`,
-            backgroundSize: "100% 100%, 50px 50px, 50px 50px",
-          }}
-        >
+        <div className="absolute inset-0 w-full h-full z-0 flex items-center justify-center bg-space-950 pointer-events-none">
+          <canvas
+            ref={canvasRef}
+            width={dimensions.width}
+            height={dimensions.height}
+            className="absolute inset-0 w-full h-full"
+          />
+
           {/* Circular Sky Reticle */}
-          <div className="relative h-72 w-72 sm:h-96 sm:w-96 rounded-full border border-cyan-500/30 flex items-center justify-center shadow-2xl shadow-cyan-950/40">
+          <div className="relative h-72 w-72 sm:h-96 sm:w-96 rounded-full border border-cyan-500/30 flex items-center justify-center shadow-2xl shadow-cyan-950/40 pointer-events-none">
             <div className="absolute inset-10 rounded-full border border-dashed border-white/10" />
             <div className="absolute h-full w-px bg-white/10" />
             <div className="absolute w-full h-px bg-white/10" />
@@ -300,7 +496,7 @@ export function SkyViewer({
           </div>
 
           {/* Offline/Demo mode notice */}
-          <div className="absolute bottom-4 left-4 z-20 px-2.5 py-1 rounded-lg bg-space-900/90 border border-white/10 text-[11px] font-mono text-space-300">
+          <div className="absolute bottom-4 left-4 z-20 px-2.5 py-1 rounded-lg bg-space-900/90 border border-white/10 text-[11px] font-mono text-space-300 pointer-events-none">
             {isDemo ? (
               <span className="text-amber-300 font-bold">● Offline Demo Mode (Plain Canvas)</span>
             ) : (
