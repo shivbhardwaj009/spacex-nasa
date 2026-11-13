@@ -35,7 +35,7 @@ export function Badge({
     unknown:
       "bg-amber-950/80 text-amber-300 border-amber-500/50 shadow-sm shadow-amber-900/30",
     "test-data":
-      "bg-rose-950/90 text-rose-300 border-rose-500/80 animate-pulse font-bold tracking-wider shadow-sm shadow-rose-900/40",
+      "bg-slate-800/80 text-slate-300 border-slate-700/80 font-medium tracking-wider shadow-none",
     neutral:
       "bg-space-850 text-space-200 border-white/10",
     success:
@@ -47,7 +47,7 @@ export function Badge({
   const dotColors: Record<BadgeVariant, string> = {
     known: "bg-cyan-400",
     unknown: "bg-amber-400",
-    "test-data": "bg-rose-400",
+    "test-data": "bg-slate-400",
     neutral: "bg-space-400",
     success: "bg-emerald-400",
     info: "bg-sky-400",

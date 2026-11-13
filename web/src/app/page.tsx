@@ -113,16 +113,16 @@ export default function SkyDiaryApp() {
   if (error || !catalog) {
     return (
       <div className="min-h-screen bg-space-950 flex flex-col items-center justify-center p-6 text-center">
-        <Card className="max-w-md w-full border-rose-500/40 p-6 space-y-4">
-          <div className="h-12 w-12 rounded-full bg-rose-950/80 border border-rose-500/60 mx-auto flex items-center justify-center text-rose-400 text-xl font-bold">
+        <Card className="max-w-md w-full border-slate-800 p-6 space-y-4 bg-slate-950/90">
+          <div className="h-12 w-12 rounded-full bg-slate-900 border border-slate-700 mx-auto flex items-center justify-center text-slate-300 text-xl font-medium">
             !
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-lg font-bold text-white">
+            <h2 className="text-base font-semibold text-white">
               Data Pipeline Error
             </h2>
-            <p className="text-xs text-rose-300 font-mono">
+            <p className="text-xs text-slate-400 font-mono">
               {error || "Could not load candidate data catalog"}
             </p>
           </div>

@@ -201,7 +201,7 @@ export function MoverOverlay({
 
               {/* Synthetic TEST Badge */}
               {mover.is_synthetic && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-1 py-0.2 rounded text-[8px] font-mono font-bold bg-rose-950 text-rose-300 border border-rose-500/60 leading-none">
+                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-1.5 py-0.5 rounded text-[8px] font-mono font-medium bg-slate-900/90 text-slate-300 border border-slate-700 leading-none tracking-wider">
                   TEST
                 </span>
               )}

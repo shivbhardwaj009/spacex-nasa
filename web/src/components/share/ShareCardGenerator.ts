@@ -95,15 +95,15 @@ export async function generateShareCardBlob(options: ShareCardOptions): Promise<
     const testText = "TEST DATA (SYNTHETIC)";
     const testWidth = ctx.measureText(testText).width + 30;
 
-    ctx.fillStyle = "rgba(239, 68, 68, 0.25)";
-    ctx.strokeStyle = "#f87171";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.08)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
     ctx.beginPath();
     ctx.roundRect(badgeX, badgeY, testWidth, 38, 8);
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = "#fca5a5";
-    ctx.font = "bold 16px sans-serif";
+    ctx.fillStyle = "#cbd5e1";
+    ctx.font = "500 16px sans-serif";
     ctx.fillText(testText, badgeX + 15, badgeY + 25);
   }
 

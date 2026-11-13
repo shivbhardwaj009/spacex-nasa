@@ -5,7 +5,7 @@ import React, { forwardRef } from "react";
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   interactive?: boolean;
   selected?: boolean;
-  accent?: "none" | "cyan" | "amber" | "rose";
+  accent?: "none" | "cyan" | "amber" | "slate" | "rose";
 }
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
@@ -24,7 +24,8 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       none: "border-white/10 hover:border-white/20",
       cyan: "border-cyan-500/40 hover:border-cyan-400 shadow-glow-cyan",
       amber: "border-amber-500/40 hover:border-amber-400 shadow-glow-amber",
-      rose: "border-rose-500/40 hover:border-rose-400",
+      slate: "border-slate-700/60 hover:border-slate-600",
+      rose: "border-slate-700/60 hover:border-slate-600",
     };
 
     const selectedStyles = selected

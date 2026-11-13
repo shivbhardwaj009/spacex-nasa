@@ -80,9 +80,9 @@ export default function DesignSystemPage() {
             <span className="font-bold text-sm">#FBBF24</span>
             <span className="text-[10px]">Planet X Candidates</span>
           </div>
-          <div className="p-4 rounded-xl bg-rose-950/80 border border-rose-500/50 flex flex-col gap-1 text-rose-300">
-            <span className="text-xs font-mono">Rose Alert</span>
-            <span className="font-bold text-sm">#FB7185</span>
+          <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-700/80 flex flex-col gap-1 text-slate-300">
+            <span className="text-xs font-mono">Slate Neutral</span>
+            <span className="font-bold text-sm">#94A3B8</span>
             <span className="text-[10px]">TEST DATA Badge</span>
           </div>
           <div className="p-4 rounded-xl bg-space-850 border border-white/10 flex flex-col gap-1">

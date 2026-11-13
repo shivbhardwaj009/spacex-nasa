@@ -182,9 +182,9 @@ export function SearchBox({
       {errorMsg && (
         <div
           role="alert"
-          className="p-2 rounded-lg bg-rose-950/60 border border-rose-500/40 text-xs text-rose-300 font-mono flex items-start gap-2 animate-in fade-in"
+          className="p-2 rounded-lg bg-slate-900/90 border border-red-500/30 text-xs text-slate-300 font-mono flex items-start gap-2 animate-in fade-in"
         >
-          <span className="text-rose-400 font-bold shrink-0">!</span>
+          <span className="text-red-400 font-bold shrink-0">!</span>
           <span>{errorMsg}</span>
         </div>
       )}

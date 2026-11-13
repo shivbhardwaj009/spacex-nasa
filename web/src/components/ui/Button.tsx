@@ -56,7 +56,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       ghost:
         "bg-transparent hover:bg-white/10 text-space-200 hover:text-white",
       danger:
-        "bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/20",
+        "bg-red-950/80 hover:bg-red-900/80 text-red-200 border border-red-800/60 shadow-sm",
     };
 
     // Size mappings (min-height ensures 44px+ touch targets on mobile)

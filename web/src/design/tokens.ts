@@ -35,12 +35,12 @@ export const DESIGN_TOKENS = {
       dark: "#451a03",
       glow: "rgba(251, 191, 36, 0.35)",
     },
-    // Rose: Test Data & Synthetic Alerts
+    // Minimal Slate: Test Data & Synthetic Provenance (no neon / rose)
     synthetic: {
-      primary: "#f43f5e",
-      light: "#fb7185",
-      dark: "#4c0519",
-      glow: "rgba(244, 63, 94, 0.4)",
+      primary: "#94a3b8", // Slate 400
+      light: "#cbd5e1",   // Slate 300
+      dark: "#1e293b",    // Slate 800
+      glow: "rgba(148, 163, 184, 0.15)",
     },
   },
 

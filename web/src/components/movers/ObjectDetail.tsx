@@ -200,7 +200,7 @@ export const ObjectDetail: React.FC<ObjectDetailProps> = ({
               )}
 
               {isOfflineCatalog && (
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-purple-950/80 text-purple-300 border border-purple-800">
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-900/90 text-slate-300 border border-slate-800">
                   Offline Catalog
                 </span>
               )}
